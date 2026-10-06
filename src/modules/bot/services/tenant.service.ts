@@ -142,8 +142,108 @@ export class TenantService {
       include: {
         channels: {
           where: { isActive: true },
+          include: {
+            filterRules: {
+              where: { isActive: true },
+            },
+          },
         },
       },
+    });
+  }
+
+  /**
+   * Atualiza a frequência de busca em minutos de um canal
+   */
+  static async updateChannelInterval(channelId: string, minutes: number) {
+    return prisma.channel.update({
+      where: { id: channelId },
+      data: { checkIntervalMinutes: Math.max(1, minutes) },
+    });
+  }
+
+  /**
+   * Atualiza a data de última execução do canal
+   */
+  static async touchChannelLastRun(channelId: string) {
+    return prisma.channel.update({
+      where: { id: channelId },
+      data: { lastRunAt: new Date() },
+    });
+  }
+
+  /**
+   * Cria uma regra de filtro de nicho para um canal
+   */
+  static async createFilterRule(
+    channelId: string,
+    data: {
+      name: string;
+      category?: string;
+      keywordsInclude?: string | null;
+      keywordsExclude?: string | null;
+      brandOrAuthor?: string | null;
+      minPrice?: number | null;
+      maxPrice?: number | null;
+      minDiscountPercent?: number | null;
+      checkIntervalMinutes?: number;
+    }
+  ) {
+    return prisma.filterRule.create({
+      data: {
+        channelId,
+        name: data.name,
+        category: data.category || 'TODOS',
+        keywordsInclude: data.keywordsInclude,
+        keywordsExclude: data.keywordsExclude,
+        brandOrAuthor: data.brandOrAuthor,
+        minPrice: data.minPrice,
+        maxPrice: data.maxPrice,
+        minDiscountPercent: data.minDiscountPercent,
+        checkIntervalMinutes: data.checkIntervalMinutes || 15,
+      },
+    });
+  }
+
+  /**
+   * Atualiza uma regra de filtro
+   */
+  static async updateFilterRule(ruleId: string, data: any) {
+    return prisma.filterRule.update({
+      where: { id: ruleId },
+      data,
+    });
+  }
+
+  /**
+   * Remove uma regra de filtro
+   */
+  static async deleteFilterRule(ruleId: string) {
+    return prisma.filterRule.delete({
+      where: { id: ruleId },
+    });
+  }
+
+  /**
+   * Lista regras de um canal
+   */
+  static async getChannelRules(channelId: string) {
+    return prisma.filterRule.findMany({
+      where: { channelId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  /**
+   * Lista todos os canais cadastrados com suas regras e tenant
+   */
+  static async listAllChannels() {
+    return prisma.channel.findMany({
+      include: {
+        tenant: true,
+        filterRules: true,
+      },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }

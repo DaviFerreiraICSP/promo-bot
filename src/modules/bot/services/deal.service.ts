@@ -4,6 +4,7 @@ import { TenantService } from './tenant.service.js';
 import { AffiliateRouter } from '../../affiliates/index.js';
 import { TelegramPublisher } from '../../publishers/telegram.publisher.js';
 import { WhatsAppPublisher } from '../../publishers/whatsapp.publisher.js';
+import { FilterEngine } from '../../filters/filterEngine.js';
 
 export interface DistributeDealInput {
   title: string;
@@ -122,6 +123,44 @@ export class DealService {
       for (const channel of tenant.channels) {
         if (!channel.isActive) continue;
 
+        // 1. Verifica se o intervalo do canal já venceu
+        if (!FilterEngine.isDue(channel.lastRunAt, channel.checkIntervalMinutes)) {
+          continue;
+        }
+
+        // 2. Se o canal possui regras de nicho ativas, a oferta DEVE passar por pelo menos uma regra
+        if (channel.filterRules && channel.filterRules.length > 0) {
+          const matchedRule = channel.filterRules.find((rule) => {
+            const evalResult = FilterEngine.evaluate(
+              {
+                title: deal.title,
+                description: undefined,
+                price: deal.price,
+                originalPrice: deal.originalPrice,
+                category: deal.category,
+                platform: deal.platform,
+              },
+              rule
+            );
+            return evalResult.matches;
+          });
+
+          if (!matchedRule) {
+            // Não atendeu a nenhum nicho deste canal
+            continue;
+          }
+
+          // Atualiza timestamp da regra que deu match
+          try {
+            await prisma.filterRule.update({
+              where: { id: matchedRule.id },
+              data: { lastCheckedAt: new Date() },
+            });
+          } catch {
+            // ignore
+          }
+        }
+
         try {
           let pubResult;
           if (channel.platform === 'WHATSAPP') {
@@ -172,6 +211,7 @@ export class DealService {
 
           if (pubResult.success) {
             deliveredCount++;
+            await TenantService.touchChannelLastRun(channel.id);
           }
         } catch (err: any) {
           console.error(

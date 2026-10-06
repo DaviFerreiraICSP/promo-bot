@@ -40,13 +40,37 @@ model Channel {
   chatId      String        // e.g. "@ofertas_canal" or "-1001234567890" or WhatsApp JID
   name        String        // Display title
   isActive    Boolean       @default(true)
-  categories  String?       // Comma separated categories or null for all
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  categories            String?       // Comma separated categories or null for all
+  checkIntervalMinutes  Int           @default(15) // Frequência em minutos para buscar promoções deste canal
+  lastRunAt             DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
 
-  posts       PostHistory[]
+  posts                 PostHistory[]
+  filterRules           FilterRule[]
 
   @@unique([tenantId, platform, chatId])
+}
+
+model FilterRule {
+  id                   String    @id @default(cuid())
+  channelId            String
+  channel              Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  name                 String    // e.g. "Teologia Reformada - Livros"
+  category             String    @default("TODOS") // LIVROS, TECH, CASA, GAMES, MODA, BELEZA, TODOS
+  keywordsInclude      String?   // palavras-chave obrigatórias (ex: "teologia, doutrina, graça, expiação")
+  keywordsExclude      String?   // palavras negativas a ignorar (ex: "autoajuda, esoterismo, romance")
+  brandOrAuthor        String?   // autor, editora ou marca (ex: "Vida Nova, Thomas Nelson, Fiel, John Piper")
+  minPrice             Float?    // preço mínimo
+  maxPrice             Float?    // preço máximo
+  minDiscountPercent   Int?      // desconto mínimo % (ex: 20)
+  checkIntervalMinutes Int       @default(15) // Frequência específica para este nicho
+  lastCheckedAt        DateTime?
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([channelId])
 }
 
 model Deal {

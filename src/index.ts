@@ -1,9 +1,13 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import fastifyStatic from '@fastify/static';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { env } from './config/env.js';
 import { prisma } from './db/prisma.js';
 import { createBot } from './modules/bot/bot.js';
 import { ScraperWorker } from './modules/scraper/worker.js';
+import { registerApiRoutes } from './modules/api/routes.js';
 
 async function bootstrap() {
   console.log('🚀 Inicializando PromoBot Platform...');
@@ -13,6 +17,20 @@ async function bootstrap() {
   });
 
   await server.register(cors, { origin: '*' });
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const publicPath = path.join(__dirname, '../public');
+
+  // Serve arquivos estáticos da interface web (Dashboard)
+  await server.register(fastifyStatic, {
+    root: publicPath,
+    prefix: '/',
+  });
+
+  server.get('/dashboard', async (req, reply) => {
+    return reply.sendFile('index.html');
+  });
 
   // Rota de Health Check para Railway
   server.get('/health', async () => {
@@ -25,6 +43,9 @@ async function bootstrap() {
 
   // Instancia o Bot Telegram
   const bot = createBot();
+
+  // Registra as rotas REST da API para o Dashboard Web
+  registerApiRoutes(server, bot);
 
   if (env.TELEGRAM_BOT_TOKEN) {
     if (env.TELEGRAM_WEBHOOK_URL) {

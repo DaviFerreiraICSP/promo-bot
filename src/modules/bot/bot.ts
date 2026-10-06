@@ -12,6 +12,8 @@ import {
   handleChannelsCommand,
   handleAddChannel,
   handleRemoveChannel,
+  handleFrequencyCommand,
+  handleFiltersCommand,
 } from './commands/channels.js';
 import {
   handleSettingsCommand,
@@ -47,6 +49,8 @@ export function createBot(): Bot {
   bot.command('canais', handleChannelsCommand);
   bot.command('add_canal', handleAddChannel);
   bot.command('remover_canal', handleRemoveChannel);
+  bot.command('frequencia', handleFrequencyCommand);
+  bot.command('filtros', handleFiltersCommand);
 
   // Comandos de Configurações
   bot.command('config', handleSettingsCommand);

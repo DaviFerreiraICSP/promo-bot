@@ -91,3 +91,81 @@ export async function handleRemoveChannel(ctx: Context) {
     parse_mode: 'HTML',
   });
 }
+
+export async function handleFrequencyCommand(ctx: Context) {
+  if (!ctx.from || !ctx.match) {
+    await ctx.reply(
+      'Uso: <code>/frequencia @nomedocanal 15</code> (intervalo em minutos, ex: 15, 30, 60)',
+      { parse_mode: 'HTML' }
+    );
+    return;
+  }
+
+  const parts = String(ctx.match).trim().split(/\s+/);
+  if (parts.length < 2) {
+    await ctx.reply(
+      'Uso: <code>/frequencia @nomedocanal 15</code> (informe o canal e os minutos)',
+      { parse_mode: 'HTML' }
+    );
+    return;
+  }
+
+  const targetChat = parts[0];
+  const minutes = parseInt(parts[1], 10);
+
+  if (isNaN(minutes) || minutes < 1) {
+    await ctx.reply('⚠️ Os minutos devem ser um número válido maior que 0.');
+    return;
+  }
+
+  const userId = String(ctx.from.id);
+  const tenant = await TenantService.getTenant(userId);
+  const channel = tenant?.channels.find((ch) => ch.chatId === targetChat);
+
+  if (!channel) {
+    await ctx.reply(`⚠️ Canal <code>${targetChat}</code> não encontrado na sua lista.`, {
+      parse_mode: 'HTML',
+    });
+    return;
+  }
+
+  await TenantService.updateChannelInterval(channel.id, minutes);
+  await ctx.reply(
+    `⏱️ <b>Frequência atualizada!</b>\nO bot agora verificará ofertas para o canal <b>${channel.name}</b> a cada <b>${minutes} minutos</b>.`,
+    { parse_mode: 'HTML' }
+  );
+}
+
+export async function handleFiltersCommand(ctx: Context) {
+  if (!ctx.from) return;
+  const userId = String(ctx.from.id);
+  const tenant = await TenantService.getTenant(userId);
+
+  if (!tenant || tenant.channels.length === 0) {
+    await ctx.reply('⚠️ Cadastre um canal primeiro com /add_canal.');
+    return;
+  }
+
+  let text = '🎯 <b>Seus Nichos e Filtros Configurados:</b>\n\n';
+
+  for (const ch of tenant.channels) {
+    text += `📢 <b>Canal: ${ch.name}</b> (Intervalo: a cada ${ch.checkIntervalMinutes}m)\n`;
+    const rules = await TenantService.getChannelRules(ch.id);
+
+    if (rules.length === 0) {
+      text += '  <i>Sem regras específicas (recebe todas as ofertas gerais).</i>\n\n';
+    } else {
+      rules.forEach((r, idx) => {
+        text += `  ${idx + 1}. [${r.category}] <b>${r.name}</b>\n`;
+        if (r.brandOrAuthor) text += `     ✍️ Autores/Marcas: <code>${r.brandOrAuthor}</code>\n`;
+        if (r.keywordsInclude) text += `     ✅ Termos: <code>${r.keywordsInclude}</code>\n`;
+        if (r.keywordsExclude) text += `     🚫 Proibidos: <code>${r.keywordsExclude}</code>\n`;
+        if (r.maxPrice) text += `     💰 Preço Máx: R$ ${r.maxPrice}\n`;
+      });
+      text += '\n';
+    }
+  }
+
+  text += `💡 <i>Dica: Você pode gerenciar, criar regras detalhadas e testar links no painel web pelo navegador!</i>`;
+  await ctx.reply(text, { parse_mode: 'HTML' });
+}

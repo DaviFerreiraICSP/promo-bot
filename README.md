@@ -53,11 +53,34 @@ Projetado especificamente para ser leve e eficiente, rodando tranquilamente dent
 | `/canais` | Lista seus canais/grupos cadastrados |
 | `/add_canal @nomedocanal` | Vincula um canal do Telegram (adicione o bot como admin primeiro) |
 | `/remover_canal @nomedocanal` | Desvincula um canal |
+| `/frequencia @nomedocanal <minutos>` | Altera a frequência de busca para este canal (ex: 15, 30, 60) |
+| `/filtros` | Lista as regras e nichos configurados para os seus canais |
 | `/config` | Exibe suas preferências atuais |
 | `/autopost on` ou `off` | Ativa ou pausa a postagem automática 24/7 nos seus canais |
 | `/rodape <seu texto>` | Define um rodapé personalizado para suas mensagens |
 | `/remover_rodape` | Restaura o rodapé padrão |
 | `/cabecalho <seu texto>` | Define um cabeçalho personalizado |
+
+---
+
+## 🖥️ Dashboard no Navegador (Interface Web)
+
+O PromoBot já vem com uma interface visual completa integrada, servida na raiz da sua aplicação (`http://localhost:3000` ou no seu domínio do Railway):
+
+1. **🎯 Regras de Nicho & Filtros Granulares**:
+   - Crie regras específicas por nicho (ex: *Livros de Teologia*).
+   - Defina conceitos obrigatórios (ex: `teologia, graça, expiação`).
+   - Defina termos proibidos para exclusão imediata (ex: `autoajuda, romance`).
+   - Defina autores e editoras específicas (ex: `Vida Nova, Thomas Nelson, Fiel, John Piper`).
+   - Ajuste faixa de preço e porcentagem mínima de desconto.
+2. **📢 Canais & Frequência**:
+   - Ajuste o intervalo de busca de cada canal (5 min, 15 min, 30 min, 1h, 2h, etc.).
+3. **🧪 Simulador de Filtros em Tempo Real**:
+   - Cole qualquer link de produto antes de postar para ver na hora se ele atende ou não aos critérios da sua regra!
+4. **🏷️ Tags de Afiliados**:
+   - Altere suas credenciais da Amazon, Shopee, Mercado Livre e Magalu visualmente.
+5. **🚀 Postagem Manual Rápida**:
+   - Cole qualquer link, insira preço ou cupom opcional, selecione os canais e publique com 1 clique.
 
 ---
 

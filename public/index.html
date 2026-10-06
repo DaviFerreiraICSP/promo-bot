@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromoBot Dashboard - Automação & Filtros de Nicho</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            dark: {
+              900: '#090d16',
+              800: '#111827',
+              700: '#1f2937',
+              600: '#374151',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-dark-900 text-gray-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header / Navbar -->
+  <header class="border-b border-dark-700 bg-dark-800/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-bold text-xl">
+          ⚡
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base tracking-tight text-white">PromoBot</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              24/7 ONLINE
+            </span>
+          </div>
+          <p class="text-xs text-gray-400">Telegram & WhatsApp Niche Automation</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center gap-1 bg-dark-900/60 p-1 rounded-xl border border-dark-700 text-xs font-medium">
+        <button onclick="switchTab('rules')" id="tab-rules" class="nav-tab px-3 py-1.5 rounded-lg transition-all text-white bg-indigo-600 font-semibold shadow-sm">
+          🎯 Regras de Nicho
+        </button>
+        <button onclick="switchTab('channels')" id="tab-channels" class="nav-tab px-3 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white">
+          📢 Canais & Frequência
+        </button>
+        <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-tab px-3 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white">
+          🧪 Simulador de Filtros
+        </button>
+        <button onclick="switchTab('tags')" id="tab-tags" class="nav-tab px-3 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white">
+          🏷️ Tags de Afiliados
+        </button>
+        <button onclick="switchTab('publish')" id="tab-publish" class="nav-tab px-3 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white">
+          🚀 Postar Manual
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- 1. TAB: REGRAS DE NICHO -->
+    <section id="view-rules" class="tab-view space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>🎯</span> Regras de Nicho & Filtros Granulares
+          </h2>
+          <p class="text-sm text-gray-400">Configure exatamente o que você deseja capturar (ex: autores, editoras, conceitos teológicos e palavras proibidas).</p>
+        </div>
+        <button onclick="openRuleModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all">
+          <span>+</span> Nova Regra de Nicho
+        </button>
+      </div>
+
+      <!-- Grid de Regras -->
+      <div id="rules-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- 2. TAB: CANAIS & FREQUÊNCIA -->
+    <section id="view-channels" class="tab-view hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>📢</span> Canais de Destino & Frequência de Busca
+          </h2>
+          <p class="text-sm text-gray-400">Defina de quanto em quanto tempo o bot irá buscar e disparar ofertas para cada canal.</p>
+        </div>
+        <button onclick="openChannelModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all">
+          <span>+</span> Cadastrar Canal
+        </button>
+      </div>
+
+      <div class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-dark-900/60 text-gray-400 font-semibold border-b border-dark-700">
+            <tr>
+              <th class="p-4">Canal / Chat</th>
+              <th class="p-4">Plataforma</th>
+              <th class="p-4">Frequência de Busca</th>
+              <th class="p-4">Regras de Nicho Ativas</th>
+              <th class="p-4">Status</th>
+              <th class="p-4 text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="channels-table-body" class="divide-y divide-dark-700 text-gray-200">
+            <!-- Renderizado dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. TAB: SIMULADOR DE FILTROS -->
+    <section id="view-simulator" class="tab-view hidden space-y-6 max-w-3xl mx-auto">
+      <div class="text-center space-y-1">
+        <h2 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+          <span>🧪</span> Simulador de Filtros em Tempo Real
+        </h2>
+        <p class="text-xs text-gray-400">Cole qualquer link de produto para ver se ele seria aprovado ou reprovado pela sua regra de nicho antes de ser postado!</p>
+      </div>
+
+      <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700 space-y-4 shadow-xl">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5">Escolha a Regra para Testar</label>
+          <select id="sim-rule-select" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <!-- Options dinâmicas -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5">URL do Produto / Livro (Amazon, Shopee, Mercado Livre, Magalu)</label>
+          <div class="flex gap-2">
+            <input id="sim-url" type="url" placeholder="https://www.amazon.com.br/dp/B08N5WRWNW..." class="flex-1 bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <button onclick="runFilterSimulation()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-xs transition-all flex items-center gap-2">
+              <span id="sim-btn-text">Testar Filtro</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resultado do Teste -->
+        <div id="sim-result" class="hidden pt-4 border-t border-dark-700 space-y-3">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TAB: TAGS DE AFILIADOS -->
+    <section id="view-tags" class="tab-view hidden space-y-6 max-w-2xl mx-auto">
+      <div>
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>🏷️</span> Configuração de Tags de Afiliados
+        </h2>
+        <p class="text-sm text-gray-400">Insira suas credenciais das lojas parceiras para converter automaticamente todos os links compartilhados.</p>
+      </div>
+
+      <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700 space-y-4 shadow-xl">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Amazon Associates Tag</label>
+          <input id="tag-amazon" type="text" placeholder="ex: davipromos-20" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[11px] text-gray-500">Injeta <code>tag=seuid-20</code> em todos os produtos Amazon</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Shopee Tag / Referral ID</label>
+          <input id="tag-shopee" type="text" placeholder="ex: shopee_davi" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[11px] text-gray-500">Injeta subid ou universal link Shopee</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Mercado Livre Afiliados (matt_tool)</label>
+          <input id="tag-meli" type="text" placeholder="ex: mlb_davi" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[11px] text-gray-500">Injeta código de campanha Mercado Livre</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Magazine Luiza (Magazine Você Loja)</label>
+          <input id="tag-magalu" type="text" placeholder="ex: magazinedavi" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[11px] text-gray-500">Transforma links em <code>magazinevoce.com.br/sualoja/p/...</code></span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Rodapé Padrão dos Posts</label>
+          <textarea id="tag-footer" rows="2" placeholder="👉 Entre no nosso grupo VIP para mais ofertas exclusivas!" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="saveAffiliateTags()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-indigo-600/20 transition-all">
+            Salvar Configurações de Afiliados
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. TAB: POSTAR MANUAL -->
+    <section id="view-publish" class="tab-view hidden space-y-6 max-w-2xl mx-auto">
+      <div>
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>🚀</span> Publicação Manual Rápida
+        </h2>
+        <p class="text-sm text-gray-400">Cole qualquer link de produto. O sistema raspa título, imagem e preço, substitui a sua tag e posta nos canais selecionados.</p>
+      </div>
+
+      <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700 space-y-4 shadow-xl">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5">Link do Produto</label>
+          <input id="pub-url" type="url" placeholder="https://www.amazon.com.br/dp/..." class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Preço Promocional (Opcional)</label>
+            <input id="pub-price" type="number" step="0.01" placeholder="ex: 49.90" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Cupom de Desconto (Opcional)</label>
+            <input id="pub-coupon" type="text" placeholder="ex: PROMO10" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5">Selecione os Canais de Destino</label>
+          <div id="pub-channels-list" class="space-y-2 bg-dark-900 p-3 rounded-xl border border-dark-700 max-h-40 overflow-y-auto text-xs">
+            <!-- Checkboxes de canais -->
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="executeManualPublish()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2">
+            <span id="pub-btn-text">Publicar Agora com Meus Links</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: NOVA/EDITAR REGRA DE NICHO -->
+  <div id="rule-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-dark-800 border border-dark-700 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl space-y-4 p-6 text-xs">
+      <div class="flex items-center justify-between border-b border-dark-700 pb-3">
+        <h3 id="modal-title" class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🎯</span> Configurar Regra de Nicho Granular
+        </h3>
+        <button onclick="closeRuleModal()" class="text-gray-400 hover:text-white text-lg">&times;</button>
+      </div>
+
+      <div class="space-y-3 max-h-[75vh] overflow-y-auto pr-1">
+        <input type="hidden" id="modal-rule-id">
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Vincular ao Canal</label>
+          <select id="modal-channel-select" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white"></select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Nome da Regra</label>
+            <input id="modal-name" type="text" placeholder="ex: Livros de Teologia" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Nicho / Categoria</label>
+            <select id="modal-category" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+              <option value="LIVROS">📚 Livros</option>
+              <option value="TECH">💻 Tecnologia</option>
+              <option value="GAMES">🎮 Games & Consoles</option>
+              <option value="CASA">🏠 Casa & Eletrodomésticos</option>
+              <option value="MODA">👗 Moda & Acessórios</option>
+              <option value="TODOS">🌐 Qualquer Categoria</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">⏱️ Frequência de Verificação Deste Nicho</label>
+          <select id="modal-interval" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+            <option value="5">A cada 5 minutos (Ultra Rápido)</option>
+            <option value="15" selected>A cada 15 minutos (Recomendado)</option>
+            <option value="30">A cada 30 minutos</option>
+            <option value="60">A cada 1 hora</option>
+            <option value="120">A cada 2 horas</option>
+            <option value="360">A cada 6 horas</option>
+            <option value="1440">Apenas 1 vez por dia</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-purple-400 mb-1">✍️ Autores, Editoras ou Marcas Específicas</label>
+          <input id="modal-brands" type="text" placeholder="ex: Vida Nova, Thomas Nelson, Fiel, John Piper, C.S. Lewis" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          <span class="text-[10px] text-gray-500">Separe por vírgulas. Apenas produtos dessas editoras/autores serão aceitos.</span>
+        </div>
+
+        <div>
+          <label class="block font-medium text-emerald-400 mb-1">✅ Conceitos / Palavras-chave Obrigatórias</label>
+          <input id="modal-includes" type="text" placeholder="ex: teologia, doutrina, graça, expiação, soberania" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          <span class="text-[10px] text-gray-500">Separe por vírgulas. O produto deve conter ao menos um desses termos.</span>
+        </div>
+
+        <div>
+          <label class="block font-medium text-rose-400 mb-1">🚫 Termos Proibidos (Filtro Negativo / Exclusão)</label>
+          <input id="modal-excludes" type="text" placeholder="ex: autoajuda, ficção, romance, esoterismo" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          <span class="text-[10px] text-gray-500">Se o produto contiver qualquer uma dessas palavras, será DESCARTADO imediatamente.</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Preço Mín (R$)</label>
+            <input id="modal-min-price" type="number" step="0.01" placeholder="0" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Preço Máx (R$)</label>
+            <input id="modal-max-price" type="number" step="0.01" placeholder="150" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block font-medium text-amber-400 mb-1">Desconto Mín (%)</label>
+            <input id="modal-discount" type="number" placeholder="20" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-dark-700">
+        <button onclick="closeRuleModal()" class="px-3 py-2 rounded-lg bg-dark-700 text-gray-300 hover:text-white">Cancelar</button>
+        <button onclick="saveRuleFromModal()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-md shadow-indigo-600/20">Salvar Regra de Nicho</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CADASTRAR CANAL -->
+  <div id="channel-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-dark-800 border border-dark-700 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl space-y-4 p-6 text-xs">
+      <div class="flex items-center justify-between border-b border-dark-700 pb-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>📢</span> Cadastrar Novo Canal
+        </h3>
+        <button onclick="closeChannelModal()" class="text-gray-400 hover:text-white text-lg">&times;</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Plataforma</label>
+          <select id="chan-platform" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+            <option value="TELEGRAM">Telegram (Canal ou Grupo)</option>
+            <option value="WHATSAPP">WhatsApp (Grupo via Evolution API/Z-API)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Identificador do Canal (Chat ID)</label>
+          <input id="chan-chatid" type="text" placeholder="ex: @canal_promos ou -1001234567890" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+          <span class="text-[10px] text-gray-500">Lembre-se de adicionar o bot como Administrador no canal primeiro!</span>
+        </div>
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Nome de Exibição</label>
+          <input id="chan-name" type="text" placeholder="ex: Canal Ofertas Teologia" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+        </div>
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Frequência Padrão de Busca</label>
+          <select id="chan-interval" class="w-full bg-dark-900 border border-dark-700 rounded-lg p-2 text-white">
+            <option value="15" selected>A cada 15 minutos</option>
+            <option value="30">A cada 30 minutos</option>
+            <option value="60">A cada 1 hora</option>
+            <option value="120">A cada 2 horas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-dark-700">
+        <button onclick="closeChannelModal()" class="px-3 py-2 rounded-lg bg-dark-700 text-gray-300 hover:text-white">Cancelar</button>
+        <button onclick="saveChannelFromModal()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-md shadow-indigo-600/20">Cadastrar Canal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script JS Interativo -->
+  <script src="/app.js"></script>
+</body>
+</html>
