@@ -1,0 +1,117 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id              String        @id @default(cuid())
+  telegramUserId  String        @unique
+  name            String
+  role            String        @default("TENANT_ADMIN")
+  isActive        Boolean       @default(true)
+  autoPostEnabled Boolean       @default(true)
+  
+  amazonTag       String?
+  shopeeTag       String?
+  mercadolivreTag String?
+  magaluTag       String?
+  
+  customHeader    String?
+  customFooter    String?
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  channels        Channel[]
+  posts           PostHistory[]
+}
+
+model Channel {
+  id                    String        @id @default(cuid())
+  tenantId              String
+  tenant                Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  platform              String        @default("TELEGRAM")
+  chatId                String
+  name                  String
+  isActive              Boolean       @default(true)
+  categories            String?
+  checkIntervalMinutes  Int           @default(15)
+  lastRunAt             DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  posts                 PostHistory[]
+  filterRules           FilterRule[]
+
+  @@unique([tenantId, platform, chatId])
+}
+
+model FilterRule {
+  id                   String    @id @default(cuid())
+  channelId            String
+  channel              Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  name                 String
+  category             String    @default("TODOS")
+  keywordsInclude      String?
+  keywordsExclude      String?
+  brandOrAuthor        String?
+  minPrice             Float?
+  maxPrice             Float?
+  minDiscountPercent   Int?
+  checkIntervalMinutes Int       @default(15)
+  lastCheckedAt        DateTime?
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([channelId])
+}
+
+model Deal {
+  id              String        @id @default(cuid())
+  dealHash        String        @unique
+  title           String
+  originalUrl     String
+  canonicalUrl    String
+  platform        String
+  price           Float?
+  originalPrice   Float?
+  discountPercent Int?
+  imageUrl        String?
+  coupon          String?
+  category        String?
+  source          String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  posts           PostHistory[]
+}
+
+model PostHistory {
+  id                String    @id @default(cuid())
+  dealId            String
+  deal              Deal      @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  tenantId          String
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  channelId         String
+  channel           Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  platform          String
+  externalMessageId String?
+  status            String    @default("SENT")
+  error             String?
+  sentAt            DateTime  @default(now())
+
+  @@index([dealId, tenantId])
+  @@index([sentAt])
+}
+
+model SystemSetting {
+  key         String   @id
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}

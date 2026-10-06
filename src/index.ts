@@ -47,10 +47,12 @@ async function bootstrap() {
   // Registra as rotas REST da API para o Dashboard Web
   registerApiRoutes(server, bot);
 
-  if (env.TELEGRAM_BOT_TOKEN) {
+  if (env.TELEGRAM_BOT_TOKEN && !env.TELEGRAM_BOT_TOKEN.includes('ABCDefgh')) {
     if (env.TELEGRAM_WEBHOOK_URL) {
       console.log(`🌐 Configurando Telegram Webhook para: ${env.TELEGRAM_WEBHOOK_URL}`);
-      await bot.api.setWebhook(`${env.TELEGRAM_WEBHOOK_URL}/telegram/webhook`);
+      bot.api.setWebhook(`${env.TELEGRAM_WEBHOOK_URL}/telegram/webhook`).catch((err) => {
+        console.warn('⚠️ Falha ao registrar webhook:', err.message);
+      });
 
       server.post('/telegram/webhook', async (req, reply) => {
         await bot.handleUpdate(req.body as any);
@@ -58,17 +60,24 @@ async function bootstrap() {
       });
     } else {
       console.log('📡 Iniciando Telegram em modo Long Polling (desenvolvimento)...');
-      bot.start({
-        onStart: (info) => {
-          console.log(`🤖 Bot @${info.username} conectado com sucesso!`);
-        },
-      });
+      bot
+        .start({
+          onStart: (info) => {
+            console.log(`🤖 Bot @${info.username} conectado com sucesso!`);
+          },
+        })
+        .catch((err) => {
+          console.warn('⚠️ Não foi possível conectar ao Telegram com o token configurado:');
+          console.warn(`   (${err.message || 'Token inválido ou não autorizado'})`);
+          console.warn('💡 O Dashboard Web continuará funcionando normalmente em http://localhost:3000!');
+        });
     }
 
     // Inicia o Scraper Worker de promoções em segundo plano
     ScraperWorker.start(bot);
   } else {
-    console.warn('⚠️ AVISO: TELEGRAM_BOT_TOKEN não definido. Defina no arquivo .env para ativar o bot.');
+    console.warn('⚠️ TELEGRAM_BOT_TOKEN é de exemplo ou está vazio.');
+    console.warn('💡 O bot do Telegram está pausado, mas o Dashboard Web e API estão ATIVOS em http://localhost:3000!');
   }
 
   // Inicia servidor HTTP
