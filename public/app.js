@@ -37,7 +37,7 @@ async function handleLoginSubmit(event) {
   const loginBtn = document.getElementById('login-btn');
 
   errorBox.classList.add('hidden');
-  loginBtn.innerText = 'Autenticando...';
+  loginBtn.innerText = 'Autenticando…';
   loginBtn.disabled = true;
 
   try {
@@ -48,7 +48,7 @@ async function handleLoginSubmit(event) {
     });
 
     const data = await res.json();
-    loginBtn.innerHTML = '<span>Acessar Painel de Controle</span><span>→</span>';
+    loginBtn.innerHTML = '<span>Acessar Painel de Controle</span>';
     loginBtn.disabled = false;
 
     if (data.success && data.token) {
@@ -62,7 +62,7 @@ async function handleLoginSubmit(event) {
       errorBox.classList.remove('hidden');
     }
   } catch (err) {
-    loginBtn.innerHTML = '<span>Acessar Painel de Controle</span><span>→</span>';
+    loginBtn.innerHTML = '<span>Acessar Painel de Controle</span>';
     loginBtn.disabled = false;
     errorBox.innerText = 'Erro ao conectar ao servidor: ' + err.message;
     errorBox.classList.remove('hidden');
@@ -209,7 +209,7 @@ function renderRulesGrid() {
       <div class="space-y-3">
         <div class="flex items-start justify-between gap-2">
           <div>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               ${rule.category}
             </span>
             <h3 class="font-extrabold text-white text-sm mt-1.5">${rule.name}</h3>
@@ -224,7 +224,7 @@ function renderRulesGrid() {
           rule.brandOrAuthor
             ? `
           <div class="space-y-1">
-            <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">✍️ Autores / Editoras:</span>
+            <span class="text-[11px] font-semibold text-purple-400">Autores e editoras</span>
             <p class="text-[11px] text-purple-200 bg-purple-500/10 p-2 rounded-xl border border-purple-500/20 font-mono truncate">
               ${rule.brandOrAuthor}
             </p>
@@ -237,7 +237,7 @@ function renderRulesGrid() {
           rule.keywordsInclude
             ? `
           <div class="space-y-1">
-            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">✅ Conceitos Obrigatórios:</span>
+            <span class="text-[11px] font-semibold text-emerald-400">Conceitos obrigatórios</span>
             <p class="text-[11px] text-emerald-200 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20 font-mono truncate">
               ${rule.keywordsInclude}
             </p>
@@ -250,7 +250,7 @@ function renderRulesGrid() {
           rule.keywordsExclude
             ? `
           <div class="space-y-1">
-            <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider">🚫 Termos Proibidos:</span>
+            <span class="text-[11px] font-semibold text-rose-400">Termos proibidos (exclusão)</span>
             <p class="text-[11px] text-rose-300 bg-rose-500/10 p-2 rounded-xl border border-rose-500/20 font-mono truncate">
               ${rule.keywordsExclude}
             </p>
@@ -262,20 +262,20 @@ function renderRulesGrid() {
         <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
           <div class="bg-surface-900 p-2.5 rounded-xl border border-surface-700 flex justify-between">
             <span class="text-slate-400">Teto Preço:</span>
-            <span class="font-bold text-white">${rule.maxPrice ? 'R$ ' + rule.maxPrice : 'Livre'}</span>
+            <span class="font-bold text-white tabular-nums">${rule.maxPrice ? 'R$ ' + rule.maxPrice : 'Livre'}</span>
           </div>
           <div class="bg-surface-900 p-2.5 rounded-xl border border-surface-700 flex justify-between">
             <span class="text-slate-400">Desc. Mín:</span>
-            <span class="font-bold text-amber-400">${rule.minDiscountPercent ? rule.minDiscountPercent + '% OFF' : 'Livre'}</span>
+            <span class="font-bold text-amber-400 tabular-nums">${rule.minDiscountPercent ? rule.minDiscountPercent + '% OFF' : 'Livre'}</span>
           </div>
         </div>
       </div>
 
       <div class="pt-3 border-t border-surface-700/80 flex items-center justify-between">
-        <button onclick="testRuleInSimulator('${rule.id}')" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1">
+        <button onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name} no simulador" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
           <span>🧪</span> Testar Link
         </button>
-        <button onclick="deleteRule('${rule.id}')" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">
+        <button onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" class="text-xs text-rose-400 hover:text-rose-300 font-semibold p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
           Excluir
         </button>
       </div>
@@ -343,7 +343,7 @@ function renderChannelsTable() {
         </span>
       </td>
       <td class="p-4 text-right">
-        <button onclick="deleteChannel('${ch.id}')" class="text-rose-400 hover:text-rose-300 text-xs font-bold">
+        <button onclick="deleteChannel('${ch.id}')" aria-label="Remover canal ${ch.name}" class="text-rose-400 hover:text-rose-300 text-xs font-bold p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
           Remover
         </button>
       </td>
@@ -387,11 +387,11 @@ async function runFilterSimulation() {
     return;
   }
 
-  btnText.innerText = 'Extraindo e avaliando dados...';
+  btnText.innerText = 'Extraindo e avaliando dados…';
   diagContainer.classList.remove('hidden');
   diagContainer.innerHTML = `
     <div class="p-4 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
-      <span class="animate-spin text-indigo-400 text-base">⏳</span> Raspando metadados e aplicando motor de filtros...
+      <span class="animate-spin text-indigo-400 text-base">⏳</span> Raspando metadados e aplicando motor de filtros…
     </div>
   `;
 
@@ -430,7 +430,7 @@ async function runFilterSimulation() {
         </div>
 
         <div class="space-y-1 text-xs">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Diagnóstico dos Critérios:</span>
+          <span class="text-[10px] font-bold text-slate-400">Diagnóstico dos critérios:</span>
           <ul class="space-y-1 text-slate-200">
             ${evaluation.reasons
               .map(
@@ -524,6 +524,7 @@ function openRuleModal() {
   select.innerHTML = channels.map((ch) => `<option value="${ch.id}">${ch.name}</option>`).join('');
 
   document.getElementById('rule-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('modal-name')?.focus(), 50);
 }
 
 function closeRuleModal() {
@@ -562,6 +563,7 @@ async function saveRuleFromModal() {
 
 function openChannelModal() {
   document.getElementById('channel-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('chan-chatid')?.focus(), 50);
 }
 
 function closeChannelModal() {
@@ -704,7 +706,7 @@ async function executeManualPublish() {
   }
 
   const btnText = document.getElementById('pub-btn-text');
-  btnText.innerText = 'Processando e enviando aos canais...';
+  btnText.innerText = 'Processando e enviando aos canais…';
 
   try {
     const res = await authFetch('/api/deals/manual-publish', {
@@ -732,3 +734,13 @@ async function executeManualPublish() {
     alert('Erro ao publicar: ' + err.message);
   }
 }
+
+// ----------------------------------------------------
+// 8. ACESSIBILIDADE GLOBAL (Web Interface Guidelines)
+// ----------------------------------------------------
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeRuleModal();
+    closeChannelModal();
+  }
+});
