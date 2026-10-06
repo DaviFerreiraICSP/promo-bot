@@ -7,6 +7,8 @@ let activeTenant = null;
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
+  setInterval(updateClock, 1000);
+  updateClock();
   checkAuth();
 });
 
@@ -110,16 +112,16 @@ async function initDashboard() {
 function switchTab(tabId) {
   document.querySelectorAll('.tab-view').forEach((el) => el.classList.add('hidden'));
   document.querySelectorAll('.nav-tab').forEach((el) => {
-    el.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-    el.classList.add('text-slate-400');
+    el.classList.remove('border-black', 'bg-white', 'shadow-sm');
+    el.classList.add('border-transparent');
   });
 
   const activeView = document.getElementById(`view-${tabId}`);
   const activeTabBtn = document.getElementById(`tab-${tabId}`);
   if (activeView) activeView.classList.remove('hidden');
   if (activeTabBtn) {
-    activeTabBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-    activeTabBtn.classList.remove('text-slate-400');
+    activeTabBtn.classList.add('border-black', 'bg-white', 'shadow-sm');
+    activeTabBtn.classList.remove('border-transparent');
   }
 
   if (tabId === 'rules') renderRulesGrid();
@@ -190,12 +192,12 @@ function renderRulesGrid() {
 
   if (allRules.length === 0) {
     container.innerHTML = `
-      <div class="col-span-full p-10 text-center glass rounded-3xl border border-surface-700/80 space-y-4">
-        <span class="text-4xl">📚</span>
-        <h3 class="text-base font-bold text-white">Nenhuma regra de nicho ativa</h3>
-        <p class="text-xs text-slate-400 max-w-md mx-auto">Crie sua primeira regra personalizada com autores, editoras e conceitos teológicos específicos.</p>
-        <button onclick="applyPresetTheology()" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-600/20">
-          ✨ Aplicar Preset: Livros de Teologia
+      <div class="col-span-full p-8 text-center retro-window space-y-3">
+        <span class="text-3xl">📚</span>
+        <h3 class="text-sm font-bold">Nenhuma regra de nicho ativa</h3>
+        <p class="text-xs text-stone-600 max-w-md mx-auto">Crie sua primeira regra personalizada com autores, editoras e conceitos específicos.</p>
+        <button onclick="applyPresetTheology()" class="retro-btn retro-btn-teal px-4 py-2 text-white">
+          ✨ Aplicar Preset: Teologia Reformada
         </button>
       </div>
     `;
@@ -205,17 +207,17 @@ function renderRulesGrid() {
   container.innerHTML = allRules
     .map(
       (rule) => `
-    <div class="glass border border-surface-700/80 rounded-2xl p-5 space-y-4 hover:border-indigo-500/40 transition-all shadow-xl flex flex-col justify-between">
-      <div class="space-y-3">
-        <div class="flex items-start justify-between gap-2">
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              ${rule.category}
-            </span>
-            <h3 class="font-extrabold text-white text-sm mt-1.5">${rule.name}</h3>
-            <p class="text-[11px] text-slate-400">Canal: <span class="text-slate-200 font-semibold">${rule.channelName || 'Principal'}</span></p>
-          </div>
-          <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-surface-900 border border-surface-700 text-amber-400 whitespace-nowrap">
+    <div class="retro-window flex flex-col justify-between overflow-hidden">
+      <div class="pinstripe-titlebar">
+        <div class="titlebar-box" onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" title="Excluir"></div>
+        <div class="titlebar-text">${rule.category} • ${rule.name}</div>
+        <div class="titlebar-box" onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name}" title="Testar"></div>
+      </div>
+
+      <div class="p-3.5 space-y-2.5 text-xs bg-[#EFE8DC]">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-[11px] text-stone-800">Canal: <b>${rule.channelName || 'Principal'}</b></span>
+          <span class="bg-white border border-black px-1.5 py-0.5 text-[10px] font-bold text-amber-800">
             ⏱️ ${rule.checkIntervalMinutes || 15}m
           </span>
         </div>
@@ -223,11 +225,8 @@ function renderRulesGrid() {
         ${
           rule.brandOrAuthor
             ? `
-          <div class="space-y-1">
-            <span class="text-[11px] font-semibold text-purple-400">Autores e editoras</span>
-            <p class="text-[11px] text-purple-200 bg-purple-500/10 p-2 rounded-xl border border-purple-500/20 font-mono truncate">
-              ${rule.brandOrAuthor}
-            </p>
+          <div class="bg-purple-100 p-2 border border-purple-800 text-[10px] text-purple-900 font-mono truncate">
+            <b>✍️ Autores/Editoras:</b> ${rule.brandOrAuthor}
           </div>
         `
             : ''
@@ -236,11 +235,8 @@ function renderRulesGrid() {
         ${
           rule.keywordsInclude
             ? `
-          <div class="space-y-1">
-            <span class="text-[11px] font-semibold text-emerald-400">Conceitos obrigatórios</span>
-            <p class="text-[11px] text-emerald-200 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20 font-mono truncate">
-              ${rule.keywordsInclude}
-            </p>
+          <div class="bg-emerald-100 p-2 border border-emerald-800 text-[10px] text-emerald-900 font-mono truncate">
+            <b>✅ Conceitos:</b> ${rule.keywordsInclude}
           </div>
         `
             : ''
@@ -249,33 +245,30 @@ function renderRulesGrid() {
         ${
           rule.keywordsExclude
             ? `
-          <div class="space-y-1">
-            <span class="text-[11px] font-semibold text-rose-400">Termos proibidos (exclusão)</span>
-            <p class="text-[11px] text-rose-300 bg-rose-500/10 p-2 rounded-xl border border-rose-500/20 font-mono truncate">
-              ${rule.keywordsExclude}
-            </p>
+          <div class="bg-rose-100 p-2 border border-rose-800 text-[10px] text-rose-900 font-mono truncate">
+            <b>🚫 Proibidos:</b> ${rule.keywordsExclude}
           </div>
         `
             : ''
         }
 
-        <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-          <div class="bg-surface-900 p-2.5 rounded-xl border border-surface-700 flex justify-between">
-            <span class="text-slate-400">Teto Preço:</span>
-            <span class="font-bold text-white tabular-nums">${rule.maxPrice ? 'R$ ' + rule.maxPrice : 'Livre'}</span>
+        <div class="grid grid-cols-2 gap-2 text-[10px]">
+          <div class="bg-white p-1.5 border border-black flex justify-between">
+            <span>Teto Preço:</span>
+            <b class="tabular-nums">${rule.maxPrice ? 'R$ ' + rule.maxPrice : 'Livre'}</b>
           </div>
-          <div class="bg-surface-900 p-2.5 rounded-xl border border-surface-700 flex justify-between">
-            <span class="text-slate-400">Desc. Mín:</span>
-            <span class="font-bold text-amber-400 tabular-nums">${rule.minDiscountPercent ? rule.minDiscountPercent + '% OFF' : 'Livre'}</span>
+          <div class="bg-white p-1.5 border border-black flex justify-between">
+            <span>Desc. Mín:</span>
+            <b class="text-amber-800 tabular-nums">${rule.minDiscountPercent ? rule.minDiscountPercent + '% OFF' : 'Livre'}</b>
           </div>
         </div>
       </div>
 
-      <div class="pt-3 border-t border-surface-700/80 flex items-center justify-between">
-        <button onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name} no simulador" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
-          <span>🧪</span> Testar Link
+      <div class="p-2 border-t-2 border-black bg-[#E8DFC9] flex items-center justify-between">
+        <button onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name} no simulador" class="retro-btn px-2.5 py-1 text-teal-900">
+          🧪 Testar no CRT
         </button>
-        <button onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" class="text-xs text-rose-400 hover:text-rose-300 font-semibold p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
+        <button onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" class="retro-btn px-2.5 py-1 text-rose-800">
           Excluir
         </button>
       </div>
@@ -295,7 +288,7 @@ function renderChannelsTable() {
   if (channels.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" class="p-6 text-center text-slate-500 text-xs">
+        <td colspan="6" class="p-6 text-center text-stone-500 text-xs">
           Nenhum canal cadastrado ainda. Clique em "+ Cadastrar Canal".
         </td>
       </tr>
@@ -306,22 +299,22 @@ function renderChannelsTable() {
   tbody.innerHTML = channels
     .map(
       (ch) => `
-    <tr class="hover:bg-surface-900/40 transition-all">
-      <td class="p-4">
-        <div class="font-bold text-white text-xs">${ch.name}</div>
-        <div class="font-mono text-[11px] text-slate-400">${ch.chatId}</div>
+    <tr class="hover:bg-black/5">
+      <td class="p-3">
+        <div class="font-bold text-xs">${ch.name}</div>
+        <div class="font-mono text-[11px] text-stone-600">${ch.chatId}</div>
       </td>
-      <td class="p-4">
-        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${
+      <td class="p-3">
+        <span class="px-2 py-0.5 border border-black text-[10px] font-bold ${
           ch.platform === 'WHATSAPP'
-            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-            : 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
+            ? 'bg-emerald-200 text-emerald-950'
+            : 'bg-sky-200 text-sky-950'
         }">
           ${ch.platform}
         </span>
       </td>
-      <td class="p-4">
-        <select onchange="updateChannelInterval('${ch.id}', this.value)" class="bg-surface-900 border border-surface-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 font-medium">
+      <td class="p-3">
+        <select onchange="updateChannelInterval('${ch.id}', this.value)" class="retro-input p-1 text-[11px] font-bold">
           <option value="5" ${ch.checkIntervalMinutes === 5 ? 'selected' : ''}>5 minutos</option>
           <option value="15" ${ch.checkIntervalMinutes === 15 ? 'selected' : ''}>15 minutos</option>
           <option value="30" ${ch.checkIntervalMinutes === 30 ? 'selected' : ''}>30 minutos</option>
@@ -330,20 +323,16 @@ function renderChannelsTable() {
           <option value="360" ${ch.checkIntervalMinutes === 360 ? 'selected' : ''}>6 horas</option>
         </select>
       </td>
-      <td class="p-4">
-        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-          ${ch.filterRules ? ch.filterRules.length : 0} nichos
+      <td class="p-3">
+        <span class="font-bold text-teal-800">
+          ${ch.filterRules ? ch.filterRules.length : 0} nicho(s)
         </span>
       </td>
-      <td class="p-4">
-        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-          ch.isActive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
-        }">
-          ${ch.isActive ? '🟢 Ativo' : '🔴 Pausado'}
-        </span>
+      <td class="p-3 font-bold text-xs ${ch.isActive ? 'text-emerald-700' : 'text-rose-700'}">
+        ${ch.isActive ? '● ATIVO' : '○ PAUSADO'}
       </td>
-      <td class="p-4 text-right">
-        <button onclick="deleteChannel('${ch.id}')" aria-label="Remover canal ${ch.name}" class="text-rose-400 hover:text-rose-300 text-xs font-bold p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
+      <td class="p-3 text-right">
+        <button onclick="deleteChannel('${ch.id}')" aria-label="Remover canal ${ch.name}" class="retro-btn px-2 py-0.5 text-rose-800 text-[11px]">
           Remover
         </button>
       </td>
@@ -390,8 +379,8 @@ async function runFilterSimulation() {
   btnText.innerText = 'Extraindo e avaliando dados…';
   diagContainer.classList.remove('hidden');
   diagContainer.innerHTML = `
-    <div class="p-4 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
-      <span class="animate-spin text-indigo-400 text-base">⏳</span> Raspando metadados e aplicando motor de filtros…
+    <div class="p-3 text-center text-xs text-stone-600 flex items-center justify-center gap-2">
+      <span class="font-vt text-lg text-teal-800">⏳</span> Raspando metadados e aplicando motor de filtros…
     </div>
   `;
 
@@ -406,7 +395,7 @@ async function runFilterSimulation() {
     btnText.innerText = 'Testar Critérios de Filtro';
 
     if (data.error) {
-      diagContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-500/10 text-rose-400 text-xs">${data.error}</div>`;
+      diagContainer.innerHTML = `<div class="p-2.5 bg-rose-200 border-2 border-rose-800 text-rose-950 text-xs font-bold">${data.error}</div>`;
       return;
     }
 
@@ -415,28 +404,28 @@ async function runFilterSimulation() {
 
     // 1. Atualiza Diagnóstico de Critérios
     diagContainer.innerHTML = `
-      <div class="p-4 rounded-2xl border ${
+      <div class="p-3 border-2 ${
         isApproved
-          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-          : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
-      } space-y-2.5">
+          ? 'bg-emerald-100 border-emerald-800 text-emerald-950'
+          : 'bg-rose-100 border-rose-800 text-rose-950'
+      } space-y-2">
         <div class="flex items-center justify-between">
-          <span class="px-2.5 py-1 rounded-full text-xs font-black ${
-            isApproved ? 'bg-emerald-500 text-black' : 'bg-rose-500 text-white'
+          <span class="px-2 py-0.5 border border-black text-[10px] font-bold ${
+            isApproved ? 'bg-emerald-400 text-black' : 'bg-rose-400 text-white'
           }">
-            ${isApproved ? '✅ APROVADO PARA POSTAGEM' : '❌ REPROVADO PELO FILTRO'}
+            ${isApproved ? '✅ APROVADO PARA BROADCAST' : '❌ REPROVADO PELO FILTRO'}
           </span>
-          <span class="text-xs text-slate-400">Plataforma: <b class="text-white">${scraped.platform}</b></span>
+          <span class="text-[11px]">Plataforma: <b>${scraped.platform}</b></span>
         </div>
 
         <div class="space-y-1 text-xs">
-          <span class="text-[10px] font-bold text-slate-400">Diagnóstico dos critérios:</span>
-          <ul class="space-y-1 text-slate-200">
+          <span class="text-[10px] font-bold text-stone-700 uppercase">Diagnóstico dos critérios:</span>
+          <ul class="space-y-0.5">
             ${evaluation.reasons
               .map(
                 (r) =>
-                  `<li class="flex items-center gap-1.5"><span class="${
-                    isApproved ? 'text-emerald-400' : 'text-amber-400'
+                  `<li class="flex items-center gap-1.5 font-mono text-[11px]"><span class="${
+                    isApproved ? 'text-emerald-700' : 'text-rose-700'
                   }">•</span> ${r}</li>`
               )
               .join('')}
@@ -671,16 +660,16 @@ function populatePublishChannels() {
   if (!container) return;
 
   if (channels.length === 0) {
-    container.innerHTML = `<p class="text-slate-500">Nenhum canal cadastrado.</p>`;
+    container.innerHTML = `<p class="text-stone-500">Nenhum canal cadastrado.</p>`;
     return;
   }
 
   container.innerHTML = channels
     .map(
       (ch) => `
-    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface-850 rounded-xl">
-      <input type="checkbox" value="${ch.id}" class="pub-chan-checkbox rounded border-surface-700 text-indigo-600 focus:ring-0" checked>
-      <span class="text-white font-semibold">[${ch.platform}] ${ch.name}</span>
+    <label class="flex items-center gap-2 cursor-pointer p-1.5 hover:bg-black/5">
+      <input type="checkbox" value="${ch.id}" class="pub-chan-checkbox" checked>
+      <span class="font-bold">[${ch.platform}] ${ch.name}</span>
     </label>
   `
     )
@@ -721,7 +710,7 @@ async function executeManualPublish() {
     });
 
     const data = await res.json();
-    btnText.innerText = 'Publicar com Meus Links Agora';
+    btnText.innerText = 'Disparar Oferta com Links Afiliados';
 
     if (data.success) {
       alert(`🎉 Oferta enviada com sucesso para ${data.publishedCount} canal(is)!`);
@@ -730,7 +719,7 @@ async function executeManualPublish() {
       alert('Erro: ' + (data.error || 'Falha ao publicar'));
     }
   } catch (err) {
-    btnText.innerText = 'Publicar com Meus Links Agora';
+    btnText.innerText = 'Disparar Oferta com Links Afiliados';
     alert('Erro ao publicar: ' + err.message);
   }
 }
@@ -744,3 +733,35 @@ document.addEventListener('keydown', (e) => {
     closeChannelModal();
   }
 });
+
+// ----------------------------------------------------
+// 9. FUNÇÕES RETRÔ POOLSUITE (Relógio & Temas)
+// ----------------------------------------------------
+function updateClock() {
+  const clockEl = document.getElementById('retro-clock');
+  if (clockEl) {
+    const now = new Date();
+    clockEl.innerText = now.toLocaleTimeString('en-US', { hour12: true });
+  }
+}
+
+let isDarkMode = false;
+function toggleTheme() {
+  isDarkMode = !isDarkMode;
+  const root = document.documentElement;
+  if (isDarkMode) {
+    root.style.setProperty('--ps-bg', '#101416');
+    root.style.setProperty('--ps-window-bg', '#1a2226');
+    root.style.setProperty('--ps-window-border', '#00ffcc');
+    root.style.setProperty('--ps-ink', '#e0f7f4');
+    root.style.setProperty('--ps-bevel-light', '#32424a');
+    root.style.setProperty('--ps-bevel-dark', '#080c0e');
+  } else {
+    root.style.setProperty('--ps-bg', '#F4ECE1');
+    root.style.setProperty('--ps-window-bg', '#EFE8DC');
+    root.style.setProperty('--ps-window-border', '#1A1614');
+    root.style.setProperty('--ps-ink', '#1A1614');
+    root.style.setProperty('--ps-bevel-light', '#FFFFFF');
+    root.style.setProperty('--ps-bevel-dark', '#8C8479');
+  }
+}

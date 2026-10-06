@@ -29,7 +29,7 @@ async function testFastifyServer() {
   });
   console.log('1. GET / (Dashboard HTML): Status', responseHtml.statusCode);
   console.assert(responseHtml.statusCode === 200, 'Dashboard HTML deveria retornar 200');
-  console.assert(responseHtml.body.includes('PromoBot Pro'), 'Conteúdo do HTML incorreto!');
+  console.assert(responseHtml.body.includes('PromoBot'), 'Conteúdo do HTML incorreto!');
 
   // Teste 2: Script JS do Dashboard
   const responseJs = await server.inject({
