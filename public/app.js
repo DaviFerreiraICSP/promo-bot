@@ -81,8 +81,11 @@ function handleLogout() {
 
 function togglePasswordVisibility() {
   const passInput = document.getElementById('login-password');
+  const btn = document.getElementById('toggle-pass-btn');
   if (passInput) {
-    passInput.type = passInput.type === 'password' ? 'text' : 'password';
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    if (btn) btn.innerText = isPass ? 'Ocultar' : 'Ver';
   }
 }
 
@@ -192,12 +195,11 @@ function renderRulesGrid() {
 
   if (allRules.length === 0) {
     container.innerHTML = `
-      <div class="col-span-full p-8 text-center retro-window space-y-3">
-        <span class="text-3xl">📚</span>
-        <h3 class="text-sm font-bold">Nenhuma regra de nicho ativa</h3>
-        <p class="text-xs text-stone-600 max-w-md mx-auto">Crie sua primeira regra personalizada com autores, editoras e conceitos específicos.</p>
-        <button onclick="applyPresetTheology()" class="retro-btn retro-btn-teal px-4 py-2 text-white">
-          ✨ Aplicar Preset: Teologia Reformada
+      <div class="col-span-full p-8 text-center retro-window space-y-4">
+        <h3 class="text-sm sm:text-base font-bold">Nenhuma regra de nicho ativa</h3>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-md mx-auto">Crie sua primeira regra personalizada com autores, editoras e conceitos específicos.</p>
+        <button onclick="applyPresetTheology()" class="retro-btn retro-btn-teal text-white">
+          [ Aplicar Preset: Teologia Reformada ]
         </button>
       </div>
     `;
@@ -214,19 +216,19 @@ function renderRulesGrid() {
         <div class="titlebar-box" onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name}" title="Testar"></div>
       </div>
 
-      <div class="p-3.5 space-y-2.5 text-xs bg-[#EFE8DC]">
+      <div class="p-4 space-y-3 text-xs sm:text-sm bg-[#EFE8DC]">
         <div class="flex items-center justify-between">
-          <span class="font-bold text-[11px] text-stone-800">Canal: <b>${rule.channelName || 'Principal'}</b></span>
-          <span class="bg-white border border-black px-1.5 py-0.5 text-[10px] font-bold text-amber-800">
-            ⏱️ ${rule.checkIntervalMinutes || 15}m
+          <span class="font-bold text-stone-800">Canal: <b>${rule.channelName || 'Principal'}</b></span>
+          <span class="bg-white border border-black px-2 py-0.5 text-xs font-bold text-amber-800">
+            Radar: ${rule.checkIntervalMinutes || 15}m
           </span>
         </div>
 
         ${
           rule.brandOrAuthor
             ? `
-          <div class="bg-purple-100 p-2 border border-purple-800 text-[10px] text-purple-900 font-mono truncate">
-            <b>✍️ Autores/Editoras:</b> ${rule.brandOrAuthor}
+          <div class="bg-purple-100 p-2.5 border border-purple-800 text-xs text-purple-900 font-mono truncate">
+            <b>Autores/Editoras:</b> ${rule.brandOrAuthor}
           </div>
         `
             : ''
@@ -235,8 +237,8 @@ function renderRulesGrid() {
         ${
           rule.keywordsInclude
             ? `
-          <div class="bg-emerald-100 p-2 border border-emerald-800 text-[10px] text-emerald-900 font-mono truncate">
-            <b>✅ Conceitos:</b> ${rule.keywordsInclude}
+          <div class="bg-emerald-100 p-2.5 border border-emerald-800 text-xs text-emerald-900 font-mono truncate">
+            <b>Conceitos:</b> ${rule.keywordsInclude}
           </div>
         `
             : ''
@@ -245,30 +247,30 @@ function renderRulesGrid() {
         ${
           rule.keywordsExclude
             ? `
-          <div class="bg-rose-100 p-2 border border-rose-800 text-[10px] text-rose-900 font-mono truncate">
-            <b>🚫 Proibidos:</b> ${rule.keywordsExclude}
+          <div class="bg-rose-100 p-2.5 border border-rose-800 text-xs text-rose-900 font-mono truncate">
+            <b>Proibidos:</b> ${rule.keywordsExclude}
           </div>
         `
             : ''
         }
 
-        <div class="grid grid-cols-2 gap-2 text-[10px]">
-          <div class="bg-white p-1.5 border border-black flex justify-between">
-            <span>Teto Preço:</span>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-white p-2 border border-black flex justify-between">
+            <span>Teto:</span>
             <b class="tabular-nums">${rule.maxPrice ? 'R$ ' + rule.maxPrice : 'Livre'}</b>
           </div>
-          <div class="bg-white p-1.5 border border-black flex justify-between">
-            <span>Desc. Mín:</span>
+          <div class="bg-white p-2 border border-black flex justify-between">
+            <span>Desc:</span>
             <b class="text-amber-800 tabular-nums">${rule.minDiscountPercent ? rule.minDiscountPercent + '% OFF' : 'Livre'}</b>
           </div>
         </div>
       </div>
 
-      <div class="p-2 border-t-2 border-black bg-[#E8DFC9] flex items-center justify-between">
-        <button onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name} no simulador" class="retro-btn px-2.5 py-1 text-teal-900">
-          🧪 Testar no CRT
+      <div class="p-3 border-t-2 border-black bg-[#E8DFC9] flex items-center justify-between gap-2">
+        <button onclick="testRuleInSimulator('${rule.id}')" aria-label="Testar regra ${rule.name} no simulador" class="retro-btn text-teal-900 flex-1">
+          Testar no CRT
         </button>
-        <button onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" class="retro-btn px-2.5 py-1 text-rose-800">
+        <button onclick="deleteRule('${rule.id}')" aria-label="Excluir regra ${rule.name}" class="retro-btn text-rose-800">
           Excluir
         </button>
       </div>
@@ -379,8 +381,8 @@ async function runFilterSimulation() {
   btnText.innerText = 'Extraindo e avaliando dados…';
   diagContainer.classList.remove('hidden');
   diagContainer.innerHTML = `
-    <div class="p-3 text-center text-xs text-stone-600 flex items-center justify-center gap-2">
-      <span class="font-vt text-lg text-teal-800">⏳</span> Raspando metadados e aplicando motor de filtros…
+    <div class="p-3 text-center text-xs sm:text-sm text-stone-600 flex items-center justify-center gap-2">
+      <span class="font-vt text-lg text-teal-800">[PROCESSANDO]</span> Raspando metadados e aplicando motor de filtros…
     </div>
   `;
 
@@ -395,7 +397,7 @@ async function runFilterSimulation() {
     btnText.innerText = 'Testar Critérios de Filtro';
 
     if (data.error) {
-      diagContainer.innerHTML = `<div class="p-2.5 bg-rose-200 border-2 border-rose-800 text-rose-950 text-xs font-bold">${data.error}</div>`;
+      diagContainer.innerHTML = `<div class="p-3 bg-rose-200 border-2 border-rose-800 text-rose-950 text-xs font-bold">${data.error}</div>`;
       return;
     }
 
@@ -404,28 +406,28 @@ async function runFilterSimulation() {
 
     // 1. Atualiza Diagnóstico de Critérios
     diagContainer.innerHTML = `
-      <div class="p-3 border-2 ${
+      <div class="p-3.5 border-2 ${
         isApproved
           ? 'bg-emerald-100 border-emerald-800 text-emerald-950'
           : 'bg-rose-100 border-rose-800 text-rose-950'
-      } space-y-2">
+      } space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="px-2 py-0.5 border border-black text-[10px] font-bold ${
+          <span class="px-2.5 py-1 border border-black text-xs font-bold ${
             isApproved ? 'bg-emerald-400 text-black' : 'bg-rose-400 text-white'
           }">
-            ${isApproved ? '✅ APROVADO PARA BROADCAST' : '❌ REPROVADO PELO FILTRO'}
+            ${isApproved ? '[APROVADO PARA BROADCAST]' : '[REPROVADO PELO FILTRO]'}
           </span>
-          <span class="text-[11px]">Plataforma: <b>${scraped.platform}</b></span>
+          <span class="text-xs">Plataforma: <b>${scraped.platform}</b></span>
         </div>
 
         <div class="space-y-1 text-xs">
-          <span class="text-[10px] font-bold text-stone-700 uppercase">Diagnóstico dos critérios:</span>
-          <ul class="space-y-0.5">
+          <span class="font-bold text-stone-700 uppercase">Diagnóstico dos critérios:</span>
+          <ul class="space-y-1">
             ${evaluation.reasons
               .map(
                 (r) =>
-                  `<li class="flex items-center gap-1.5 font-mono text-[11px]"><span class="${
-                    isApproved ? 'text-emerald-700' : 'text-rose-700'
+                  `<li class="flex items-center gap-2 font-mono text-xs"><span class="${
+                    isApproved ? 'text-emerald-700 font-bold' : 'text-rose-700 font-bold'
                   }">•</span> ${r}</li>`
               )
               .join('')}
@@ -438,8 +440,8 @@ async function runFilterSimulation() {
     document.getElementById('tg-title').innerText = scraped.title || 'Título do produto';
     if (scraped.price) {
       document.getElementById('tg-prices').innerHTML = `
-        ${scraped.originalPrice ? `<div class="text-slate-400 line-through text-[11px]">De: R$ ${scraped.originalPrice.toFixed(2)}</div>` : ''}
-        <div class="text-white font-extrabold text-sm">🔥 Por: R$ ${scraped.price.toFixed(2)}</div>
+        ${scraped.originalPrice ? `<div class="text-slate-400 line-through text-xs">De: R$ ${scraped.originalPrice.toFixed(2)}</div>` : ''}
+        <div class="text-white font-extrabold text-sm sm:text-base">Por: R$ ${scraped.price.toFixed(2)}</div>
       `;
     }
 
@@ -451,11 +453,11 @@ async function runFilterSimulation() {
     }
 
     const ctaBtn = document.getElementById('tg-cta-btn');
-    ctaBtn.innerText = `🛍️ Comprar na ${scraped.platform || 'Loja'}`;
+    ctaBtn.innerText = `COMPRAR NA ${scraped.platform ? scraped.platform.toUpperCase() : 'LOJA PARCEIRA'}`;
     ctaBtn.href = url;
   } catch (err) {
     btnText.innerText = 'Testar Critérios de Filtro';
-    diagContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-500/10 text-rose-400 text-xs">Erro: ${err.message}</div>`;
+    diagContainer.innerHTML = `<div class="p-3 bg-rose-200 border-2 border-rose-800 text-rose-950 text-xs font-bold">Erro: ${err.message}</div>`;
   }
 }
 
@@ -499,7 +501,7 @@ async function applyPresetTheology() {
   });
 
   await loadChannels();
-  alert('✨ Preset "Livros de Teologia Reformada" aplicado com sucesso com todos os autores e filtros!');
+  alert('Preset "Livros de Teologia Reformada" aplicado com sucesso!');
 }
 
 function openRuleModal() {
@@ -648,7 +650,7 @@ async function saveAffiliateTags() {
     });
     const data = await res.json();
     if (data.success) {
-      alert('✅ Tags de afiliados salvas com sucesso!');
+      alert('Tags de afiliados salvas com sucesso!');
     }
   } catch (err) {
     alert('Erro ao salvar tags: ' + err.message);
@@ -713,7 +715,7 @@ async function executeManualPublish() {
     btnText.innerText = 'Disparar Oferta com Links Afiliados';
 
     if (data.success) {
-      alert(`🎉 Oferta enviada com sucesso para ${data.publishedCount} canal(is)!`);
+      alert(`Oferta enviada com sucesso para ${data.publishedCount} canal(is)!`);
       document.getElementById('pub-url').value = '';
     } else {
       alert('Erro: ' + (data.error || 'Falha ao publicar'));

@@ -49,7 +49,7 @@
 
     /* Barra de Título com Listras Horizontais (Pinstripes) Clássicas do Mac OS */
     .pinstripe-titlebar {
-      height: 28px;
+      height: 32px;
       border-bottom: 2px solid var(--ps-window-border);
       background: repeating-linear-gradient(
         to bottom,
@@ -61,13 +61,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 4px;
+      padding: 0 6px;
       user-select: none;
     }
 
     .titlebar-box {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       background: var(--ps-window-bg);
       border: 1.5px solid var(--ps-window-border);
       box-shadow: inset 1px 1px 0 #fff;
@@ -80,15 +80,15 @@
 
     .titlebar-text {
       background-color: var(--ps-window-bg);
-      padding: 0 10px;
-      font-size: 11px;
+      padding: 2px 12px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       border: 1px solid var(--ps-window-border);
     }
 
-    /* Botão Retrô Tátil 3D (Clicky) */
+    /* Botão Retrô Tátil 3D (Clicky) - Ampliado e Confortável */
     .retro-btn {
       background: #EFE8DC;
       border: 1.5px solid var(--ps-window-border);
@@ -96,16 +96,35 @@
         inset 1.5px 1.5px 0 #fff,
         inset -1.5px -1.5px 0 #8C8479,
         1.5px 1.5px 0 var(--ps-window-border);
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
+      min-height: 44px;
+      padding: 8px 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       transition: all 0.05s ease;
       cursor: pointer;
+      user-select: none;
     }
     .retro-btn:active {
       box-shadow: 
         inset 1.5px 1.5px 0 #000,
         inset -1.5px -1.5px 0 #fff;
       transform: translate(1px, 1px);
+    }
+
+    .retro-btn-sm {
+      min-height: 36px;
+      padding: 4px 12px;
+      font-size: 11px;
+    }
+
+    .retro-btn-lg {
+      min-height: 48px;
+      padding: 12px 24px;
+      font-size: 14px;
     }
 
     .retro-btn-teal {
@@ -131,13 +150,15 @@
         1.5px 1.5px 0 var(--ps-window-border);
     }
 
-    /* Inputs rebaixados (Sunken box) */
+    /* Inputs rebaixados (Sunken box) - Ampliados e Ergonômicos */
     .retro-input {
       background: #ffffff;
       border: 1.5px solid var(--ps-window-border);
       box-shadow: inset 1.5px 1.5px 2px rgba(0,0,0,0.25);
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 12px;
+      min-height: 42px;
+      padding: 8px 12px;
       color: #1A1614;
     }
     .retro-input:focus {
@@ -177,7 +198,7 @@
 <body class="min-h-screen flex flex-col antialiased selection:bg-teal-500 selection:text-white">
 
   <!-- Skip Link Acessível (Web Interface Guidelines) -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1 focus:bg-teal-700 focus:text-white focus:border-2 focus:border-black">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-700 focus:text-white focus:border-2 focus:border-black font-bold">
     Pular para o conteúdo principal
   </a>
 
@@ -189,42 +210,42 @@
       <!-- Pinstripe Titlebar -->
       <div class="pinstripe-titlebar">
         <div class="titlebar-box" aria-hidden="true"></div>
-        <div class="titlebar-text">🔒 PromoBot OS — Autenticação</div>
+        <div class="titlebar-text">PROMOBOT OS - AUTENTICACAO</div>
         <div class="titlebar-box" aria-hidden="true"></div>
       </div>
 
-      <div class="p-6 space-y-5 bg-[#EFE8DC]">
-        <div class="flex items-center gap-3 border-b-2 border-black pb-3">
-          <div class="w-12 h-12 bg-white border-2 border-black flex items-center justify-center text-2xl shadow-[2px_2px_0px_#1A1614]" aria-hidden="true">
-            ⚡
+      <div class="p-6 sm:p-8 space-y-6 bg-[#EFE8DC]">
+        <div class="flex items-center gap-3 border-b-2 border-black pb-4">
+          <div class="w-12 h-12 bg-white border-2 border-black flex items-center justify-center font-bold text-lg shadow-[2px_2px_0px_#1A1614]" aria-hidden="true">
+            PB
           </div>
           <div>
-            <h1 class="font-vt text-2xl font-bold tracking-wider">PromoBot OS ☼</h1>
-            <p class="text-[11px] text-stone-600">Terminal de Administração do Sistema</p>
+            <h1 class="font-vt text-2xl sm:text-3xl font-bold tracking-wider">PromoBot OS ☼</h1>
+            <p class="text-xs text-stone-600">Terminal de Administração do Sistema</p>
           </div>
         </div>
 
-        <div id="login-error" role="alert" aria-live="polite" class="hidden p-2.5 bg-rose-200 border-2 border-rose-800 text-rose-900 text-xs font-bold"></div>
+        <div id="login-error" role="alert" aria-live="polite" class="hidden p-3 bg-rose-200 border-2 border-rose-800 text-rose-900 text-xs font-bold"></div>
 
-        <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4 text-xs">
-          <div class="space-y-1">
+        <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-5 text-xs sm:text-sm">
+          <div class="space-y-1.5">
             <label for="login-username" class="block font-bold">Nome de Usuário</label>
-            <input id="login-username" name="username" type="text" autocomplete="username" spellcheck="false" required placeholder="admin" value="admin" class="w-full retro-input px-3 py-2">
+            <input id="login-username" name="username" type="text" autocomplete="username" spellcheck="false" required placeholder="admin" value="admin" class="w-full retro-input">
           </div>
 
-          <div class="space-y-1">
+          <div class="space-y-1.5">
             <label for="login-password" class="block font-bold">Chave de Acesso (Senha)</label>
             <div class="relative">
-              <input id="login-password" name="password" type="password" autocomplete="current-password" spellcheck="false" required placeholder="admin123" value="admin123" class="w-full retro-input px-3 py-2 pr-10">
-              <button type="button" onclick="togglePasswordVisibility()" aria-label="Mostrar ou ocultar senha" class="absolute right-2 top-1/2 -translate-y-1/2 text-stone-600 hover:text-black p-1">
-                <span aria-hidden="true">👁️</span>
+              <input id="login-password" name="password" type="password" autocomplete="current-password" spellcheck="false" required placeholder="admin123" value="admin123" class="w-full retro-input pr-20">
+              <button type="button" id="toggle-pass-btn" onclick="togglePasswordVisibility()" aria-label="Mostrar ou ocultar senha" class="absolute right-2 top-1/2 -translate-y-1/2 retro-btn retro-btn-sm text-[10px] uppercase">
+                Ver
               </button>
             </div>
-            <span class="text-[10px] text-stone-500 block pt-0.5">Credencial padrão: <code>admin</code> / <code>admin123</code></span>
+            <span class="text-[11px] text-stone-500 block pt-1">Credencial padrão: <code>admin</code> / <code>admin123</code></span>
           </div>
 
-          <button type="submit" id="login-btn" class="w-full retro-btn retro-btn-teal py-3 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-            <span>Entrar no Sistema</span>
+          <button type="submit" id="login-btn" class="w-full retro-btn retro-btn-teal retro-btn-lg uppercase tracking-wider">
+            <span>Acessar Painel de Controle</span>
           </button>
         </form>
       </div>
@@ -237,82 +258,86 @@
   <div id="dashboard-container" class="hidden min-h-screen flex flex-col relative z-10 w-full">
 
     <!-- BARRA DE MENU SYSTEM 7 (Estilo Mac OS / Poolsuite) -->
-    <header class="bg-[#EFE8DC] border-b-2 border-[#1A1614] h-8 flex items-center justify-between px-3 text-xs select-none sticky top-0 z-50 shadow-sm">
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-1.5 font-bold cursor-pointer hover:bg-black/5 px-1.5 py-0.5 rounded">
-          <span class="text-sm">⚡</span>
-          <span class="font-vt text-lg tracking-wider">PromoBot OS ☼</span>
+    <header class="bg-[#EFE8DC] border-b-2 border-[#1A1614] min-h-[38px] flex items-center justify-between px-3 text-xs select-none sticky top-0 z-50 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1 font-bold cursor-pointer hover:bg-black/5 px-2 py-1 border border-transparent">
+          <span class="font-vt text-xl tracking-wider">PromoBot OS ☼</span>
         </div>
 
-        <nav aria-label="Navegação do painel" class="hidden md:flex items-center gap-1">
-          <button onclick="switchTab('rules')" id="tab-rules" class="nav-tab px-2.5 py-0.5 text-[11px] font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
-            <span>🎯</span> Deck de Nicho
+        <nav aria-label="Navegação do painel" class="hidden lg:flex items-center gap-1">
+          <button onclick="switchTab('rules')" id="tab-rules" class="nav-tab px-3 py-1 text-xs font-bold border border-black bg-white shadow-sm flex items-center gap-1">
+            Deck de Nicho
           </button>
-          <button onclick="switchTab('channels')" id="tab-channels" class="nav-tab px-2.5 py-0.5 text-[11px] font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
-            <span>📢</span> Canais & Radar
+          <button onclick="switchTab('channels')" id="tab-channels" class="nav-tab px-3 py-1 text-xs font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
+            Canais & Radar
           </button>
-          <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-tab px-2.5 py-0.5 text-[11px] font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
-            <span>📺</span> Monitor CRT
+          <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-tab px-3 py-1 text-xs font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
+            Monitor CRT
           </button>
-          <button onclick="switchTab('tags')" id="tab-tags" class="nav-tab px-2.5 py-0.5 text-[11px] font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
-            <span>🏷️</span> Tags Afiliados
+          <button onclick="switchTab('tags')" id="tab-tags" class="nav-tab px-3 py-1 text-xs font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
+            Tags de Afiliados
           </button>
-          <button onclick="switchTab('publish')" id="tab-publish" class="nav-tab px-2.5 py-0.5 text-[11px] font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
-            <span>🚀</span> Post Express
+          <button onclick="switchTab('publish')" id="tab-publish" class="nav-tab px-3 py-1 text-xs font-bold border border-transparent hover:border-black hover:bg-white flex items-center gap-1">
+            Post Express
           </button>
         </nav>
       </div>
 
       <!-- Indicador de Status & Relógio Digital -->
-      <div class="flex items-center gap-3 text-[11px] font-bold">
-        <button onclick="toggleTheme()" class="retro-btn px-2 py-0.5 text-[10px] hidden sm:block">
-          🎨 Tema
+      <div class="flex items-center gap-2 sm:gap-3 text-xs font-bold">
+        <button onclick="toggleTheme()" class="retro-btn retro-btn-sm text-[11px] hidden sm:inline-flex">
+          Tema
         </button>
 
-        <div class="flex items-center gap-1.5 bg-emerald-600/10 text-emerald-800 border border-emerald-700/30 px-2 py-0.5 rounded-sm">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <div class="flex items-center gap-1.5 bg-emerald-600/10 text-emerald-900 border border-emerald-700/40 px-2.5 py-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
           <span class="font-vt text-sm">24/7 ONLINE</span>
         </div>
 
-        <div id="retro-clock" class="font-vt text-base tracking-wider bg-white px-2 border border-black">
+        <div id="retro-clock" class="font-vt text-base tracking-wider bg-white px-2 py-0.5 border border-black hidden sm:block">
           12:00:00 PM
         </div>
 
-        <div class="hidden sm:flex items-center gap-1 bg-white border border-black px-1.5 py-0.5 text-[10px]">
-          <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
+        <div class="hidden md:flex items-center gap-1 bg-white border border-black px-2 py-0.5 text-xs">
           <span id="user-display-name" class="font-bold">admin</span>
         </div>
 
-        <button onclick="handleLogout()" aria-label="Encerrar sessão" class="retro-btn px-2 py-0.5 text-rose-800">
+        <button onclick="handleLogout()" aria-label="Encerrar sessão" class="retro-btn retro-btn-sm text-rose-800">
           Sair
         </button>
       </div>
     </header>
 
+    <!-- Sub-menu responsivo para telas móveis -->
+    <nav aria-label="Navegação mobile" class="lg:hidden flex flex-wrap gap-1 p-2 bg-[#E8DFC9] border-b-2 border-black text-xs font-bold">
+      <button onclick="switchTab('rules')" class="nav-tab-m px-2.5 py-1 bg-white border border-black">Deck</button>
+      <button onclick="switchTab('channels')" class="nav-tab-m px-2.5 py-1 border border-black bg-[#EFE8DC]">Canais</button>
+      <button onclick="switchTab('simulator')" class="nav-tab-m px-2.5 py-1 border border-black bg-[#EFE8DC]">Monitor</button>
+      <button onclick="switchTab('tags')" class="nav-tab-m px-2.5 py-1 border border-black bg-[#EFE8DC]">Tags</button>
+      <button onclick="switchTab('publish')" class="nav-tab-m px-2.5 py-1 border border-black bg-[#EFE8DC]">Postar</button>
+    </nav>
+
     <!-- ÁREA DE TRABALHO DO DESKTOP -->
     <main id="main-content" class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full space-y-6">
 
-      <!-- FITA DE MÉTRICAS / CASSETTE TAPE STRIP -->
-      <section aria-label="Métricas gerais" class="retro-window p-3 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">📼</span>
-          <div>
-            <div class="font-bold text-[10px] uppercase text-stone-600 tracking-wider">Audio & Data Cassette Deck</div>
-            <div class="font-bold text-xs">PromoBot Radar 24/7 • Sistema Multi-Canal Ativo</div>
-          </div>
+      <!-- FITA DE MÉTRICAS / STATUS RADAR -->
+      <section aria-label="Métricas gerais" class="retro-window p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div>
+          <div class="font-bold text-[11px] uppercase text-stone-600 tracking-wider">Radar de Monitoramento 24/7</div>
+          <div class="font-bold text-xs sm:text-sm">Sistema Autônomo Multi-Canal Ativo</div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2 font-vt text-lg">
-          <div class="bg-white border border-black px-2 py-0.5">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 font-vt text-lg sm:text-xl">
+          <div class="bg-white border border-black px-3 py-1">
             OFERTAS: <span id="stat-deals-count" class="text-teal-700 font-bold tabular-nums">0</span>
           </div>
-          <div class="bg-white border border-black px-2 py-0.5">
+          <div class="bg-white border border-black px-3 py-1">
             CANAIS: <span id="stat-channels-count" class="text-emerald-700 font-bold tabular-nums">0</span>
           </div>
-          <div class="bg-white border border-black px-2 py-0.5">
+          <div class="bg-white border border-black px-3 py-1">
             NICHOS: <span id="stat-rules-count" class="text-amber-700 font-bold tabular-nums">0</span>
           </div>
-          <div class="bg-white border border-black px-2 py-0.5">
+          <div class="bg-white border border-black px-3 py-1">
             POSTS: <span id="stat-posts-count" class="text-purple-700 font-bold tabular-nums">0</span>
           </div>
         </div>
@@ -322,18 +347,18 @@
       <section id="view-rules" class="tab-view space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="text-lg font-bold flex items-center gap-2">
-              <span>🎯</span> Deck de Filtros de Nicho & Regras Granulares
+            <h2 class="text-lg font-bold">
+              Deck de Filtros de Nicho & Regras Granulares
             </h2>
             <p class="text-xs text-stone-600">Filtros rígidos de autores, editoras, conceitos teológicos e exclusão negativa.</p>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button onclick="applyPresetTheology()" class="retro-btn px-3 py-1.5 bg-[#FFD79E] text-stone-900 flex items-center gap-1.5">
-              <span>📚</span> Preset: Teologia Reformada
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="applyPresetTheology()" class="retro-btn bg-[#FFD79E] text-stone-900">
+              [ Teologia Reformada ]
             </button>
-            <button onclick="openRuleModal()" class="retro-btn retro-btn-teal px-4 py-1.5 text-white flex items-center gap-1.5">
-              <span>+</span> Nova Regra
+            <button onclick="openRuleModal()" class="retro-btn retro-btn-teal text-white">
+              + Nova Regra
             </button>
           </div>
         </div>
@@ -346,15 +371,15 @@
 
       <!-- 2. TAB: CANAIS & FREQUÊNCIA (Radar File Manager) -->
       <section id="view-channels" class="tab-view hidden space-y-4">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="text-lg font-bold flex items-center gap-2">
-              <span>📢</span> Canais de Destino & Radar de Frequência
+            <h2 class="text-lg font-bold">
+              Canais de Destino & Radar de Frequência
             </h2>
             <p class="text-xs text-stone-600">Controle o tempo de busca autônoma do bot para cada comunidade.</p>
           </div>
-          <button onclick="openChannelModal()" class="retro-btn retro-btn-teal px-4 py-1.5 text-white flex items-center gap-1">
-            <span>+</span> Cadastrar Canal
+          <button onclick="openChannelModal()" class="retro-btn retro-btn-teal text-white w-full sm:w-auto">
+            + Cadastrar Canal
           </button>
         </div>
 
@@ -364,9 +389,9 @@
             <div class="titlebar-text">Diretório de Canais Conectados</div>
             <div class="titlebar-box" aria-hidden="true"></div>
           </div>
-          <table class="w-full text-left text-xs border-collapse">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
             <thead>
-              <tr class="border-b-2 border-black bg-[#E8DFC9] text-[11px] font-bold">
+              <tr class="border-b-2 border-black bg-[#E8DFC9] text-xs font-bold">
                 <th class="p-3">Canal / Chat</th>
                 <th class="p-3">Plataforma</th>
                 <th class="p-3">Frequência Radar</th>
@@ -385,8 +410,8 @@
       <!-- 3. TAB: SIMULADOR & MONITOR CRT DO TELEGRAM -->
       <section id="view-simulator" class="tab-view hidden space-y-4">
         <div>
-          <h2 class="text-lg font-bold flex items-center gap-2">
-            <span>📺</span> Monitor CRT do Telegram & Simulador de Filtros
+          <h2 class="text-lg font-bold">
+            Monitor CRT do Telegram & Simulador de Filtros
           </h2>
           <p class="text-xs text-stone-600">Teste qualquer URL contra seus filtros e veja o resultado no tubo de raios catódicos do Telegram.</p>
         </div>
@@ -400,22 +425,22 @@
               <div class="titlebar-box" aria-hidden="true"></div>
             </div>
 
-            <div class="p-4 space-y-4 text-xs">
+            <div class="p-5 space-y-4 text-xs sm:text-sm">
               <div>
                 <label for="sim-rule-select" class="block font-bold mb-1">Regra de Nicho Selecionada</label>
-                <select id="sim-rule-select" name="simRule" class="w-full retro-input p-2"></select>
+                <select id="sim-rule-select" name="simRule" class="w-full retro-input"></select>
               </div>
 
               <div>
                 <label for="sim-url" class="block font-bold mb-1">URL do Produto / Livro</label>
-                <input id="sim-url" name="simUrl" type="url" autocomplete="off" placeholder="https://www.amazon.com.br/dp/…" spellcheck="false" class="w-full retro-input p-2">
+                <input id="sim-url" name="simUrl" type="url" autocomplete="off" placeholder="https://www.amazon.com.br/dp/…" spellcheck="false" class="w-full retro-input">
               </div>
 
-              <button onclick="runFilterSimulation()" id="sim-submit-btn" class="w-full retro-btn retro-btn-teal py-2.5 text-white flex items-center justify-center gap-2">
+              <button onclick="runFilterSimulation()" id="sim-submit-btn" class="w-full retro-btn retro-btn-teal retro-btn-lg text-white">
                 <span id="sim-btn-text">Testar Critérios de Filtro</span>
               </button>
 
-              <div id="sim-diagnostics" role="region" aria-live="polite" class="hidden pt-2 border-t border-black space-y-2"></div>
+              <div id="sim-diagnostics" role="region" aria-live="polite" class="hidden pt-3 border-t-2 border-black space-y-2"></div>
             </div>
           </div>
 
@@ -427,36 +452,36 @@
               <div class="titlebar-box" aria-hidden="true"></div>
             </div>
 
-            <div class="p-4 space-y-3 flex-1 flex flex-col justify-between">
-              <div class="space-y-2">
-                <div class="flex items-center justify-between text-[11px] font-bold">
-                  <span>CANAL DE BROADCAST: TELEGRAM</span>
-                  <span class="font-vt text-base text-teal-800">TRANSMISSÃO AO VIVO</span>
+            <div class="p-5 space-y-4 flex-1 flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between text-xs font-bold">
+                  <span>CANAL: TELEGRAM BROADCAST</span>
+                  <span class="font-vt text-base text-teal-800">SINAL AO VIVO</span>
                 </div>
 
                 <!-- CRT Screen -->
-                <div class="crt-screen rounded p-3 text-emerald-400 font-mono text-xs space-y-2.5">
-                  <div id="tg-img-container" class="w-full h-44 bg-black/60 border border-emerald-900 rounded flex items-center justify-center text-emerald-600 text-[11px] overflow-hidden">
+                <div class="crt-screen rounded p-4 text-emerald-400 font-mono text-xs sm:text-sm space-y-3">
+                  <div id="tg-img-container" class="w-full h-48 bg-black/60 border border-emerald-900 rounded flex items-center justify-center text-emerald-600 text-xs overflow-hidden">
                     <span id="tg-no-img">A imagem do produto aparecerá aqui após o teste…</span>
                     <img id="tg-img" alt="Foto do produto no Telegram" src="" class="hidden w-full h-full object-contain">
                   </div>
 
-                  <div class="space-y-1">
-                    <div id="tg-header" class="font-bold text-amber-300">⚡ OFERTA IMPERDÍVEL ⚡</div>
-                    <div id="tg-title" class="text-white text-xs font-bold font-sans-ui">Título do produto aparecerá aqui…</div>
-                    <div id="tg-prices" class="text-[11px] text-emerald-300 tabular-nums">
-                      <div>🔥 <b>Por: R$ 0,00</b></div>
+                  <div class="space-y-1.5">
+                    <div id="tg-header" class="font-bold text-amber-300">OFERTA ESPECIAL</div>
+                    <div id="tg-title" class="text-white text-sm font-bold font-sans-ui">Título do produto aparecerá aqui…</div>
+                    <div id="tg-prices" class="text-xs sm:text-sm text-emerald-300 tabular-nums">
+                      <div><b>Por: R$ 0,00</b></div>
                     </div>
-                    <div id="tg-footer" class="text-[10px] text-emerald-600 italic">
-                      ⚠️ Preço sujeito a alteração. Tag de afiliado injetada.
+                    <div id="tg-footer" class="text-[11px] text-emerald-600 italic">
+                      Preço sujeito a alteração a qualquer momento. Tag de afiliado injetada.
                     </div>
                   </div>
                 </div>
               </div>
 
               <div>
-                <a id="tg-cta-btn" href="#" target="_blank" rel="noopener noreferrer" class="retro-btn retro-btn-coral py-2.5 text-center block text-xs tracking-wider">
-                  🛍️ Comprar na Loja Parceira
+                <a id="tg-cta-btn" href="#" target="_blank" rel="noopener noreferrer" class="retro-btn retro-btn-coral retro-btn-lg text-center block w-full uppercase tracking-wider">
+                  COMPRAR NA LOJA PARCEIRA
                 </a>
               </div>
             </div>
@@ -467,8 +492,8 @@
       <!-- 4. TAB: TAGS DE AFILIADOS (Floppy Config) -->
       <section id="view-tags" class="tab-view hidden space-y-4 max-w-3xl mx-auto">
         <div>
-          <h2 class="text-lg font-bold flex items-center gap-2">
-            <span>🏷️</span> Configuração de Tags de Afiliados
+          <h2 class="text-lg font-bold">
+            Configuração de Tags de Afiliados
           </h2>
           <p class="text-xs text-stone-600">Seus códigos de monetização em cada plataforma parceira.</p>
         </div>
@@ -480,33 +505,33 @@
             <div class="titlebar-box" aria-hidden="true"></div>
           </div>
 
-          <div class="p-5 space-y-4 text-xs">
+          <div class="p-6 space-y-5 text-xs sm:text-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="tag-amazon" class="block font-bold mb-1">Amazon Associates Tag</label>
-                <input id="tag-amazon" name="tagAmazon" type="text" autocomplete="off" placeholder="ex: davipromos-20" spellcheck="false" class="w-full retro-input p-2">
+                <input id="tag-amazon" name="tagAmazon" type="text" autocomplete="off" placeholder="ex: davipromos-20" spellcheck="false" class="w-full retro-input">
               </div>
               <div>
                 <label for="tag-shopee" class="block font-bold mb-1">Shopee Tag / Referral ID</label>
-                <input id="tag-shopee" name="tagShopee" type="text" autocomplete="off" placeholder="ex: shopee_davi" spellcheck="false" class="w-full retro-input p-2">
+                <input id="tag-shopee" name="tagShopee" type="text" autocomplete="off" placeholder="ex: shopee_davi" spellcheck="false" class="w-full retro-input">
               </div>
               <div>
                 <label for="tag-meli" class="block font-bold mb-1">Mercado Livre (matt_tool)</label>
-                <input id="tag-meli" name="tagMeli" type="text" autocomplete="off" placeholder="ex: mlb_davi" spellcheck="false" class="w-full retro-input p-2">
+                <input id="tag-meli" name="tagMeli" type="text" autocomplete="off" placeholder="ex: mlb_davi" spellcheck="false" class="w-full retro-input">
               </div>
               <div>
                 <label for="tag-magalu" class="block font-bold mb-1">Magazine Luiza (Magalu Loja)</label>
-                <input id="tag-magalu" name="tagMagalu" type="text" autocomplete="off" placeholder="ex: magazinedavi" spellcheck="false" class="w-full retro-input p-2">
+                <input id="tag-magalu" name="tagMagalu" type="text" autocomplete="off" placeholder="ex: magazinedavi" spellcheck="false" class="w-full retro-input">
               </div>
             </div>
 
             <div>
               <label for="tag-footer" class="block font-bold mb-1">Rodapé Padrão dos Posts</label>
-              <textarea id="tag-footer" name="tagFooter" rows="2" placeholder="👉 Entre no nosso canal VIP para mais ofertas exclusivas!" class="w-full retro-input p-2"></textarea>
+              <textarea id="tag-footer" name="tagFooter" rows="2" placeholder="Entre no nosso canal para mais ofertas exclusivas!" class="w-full retro-input min-h-[60px]"></textarea>
             </div>
 
-            <button onclick="saveAffiliateTags()" class="w-full retro-btn retro-btn-teal py-3 text-white text-xs">
-              💾 Salvar Parâmetros no Sistema
+            <button onclick="saveAffiliateTags()" class="w-full retro-btn retro-btn-teal retro-btn-lg text-white">
+              Salvar Parâmetros no Sistema
             </button>
           </div>
         </div>
@@ -515,8 +540,8 @@
       <!-- 5. TAB: POST EXPRESS MANUAL -->
       <section id="view-publish" class="tab-view hidden space-y-4 max-w-2xl mx-auto">
         <div>
-          <h2 class="text-lg font-bold flex items-center gap-2">
-            <span>🚀</span> Transmissão Express de Oferta
+          <h2 class="text-lg font-bold">
+            Transmissão Express de Oferta
           </h2>
           <p class="text-xs text-stone-600">Injete suas tags e dispare uma oferta manualmente para os canais selecionados.</p>
         </div>
@@ -528,29 +553,29 @@
             <div class="titlebar-box" aria-hidden="true"></div>
           </div>
 
-          <div class="p-5 space-y-4 text-xs">
+          <div class="p-6 space-y-5 text-xs sm:text-sm">
             <div>
               <label for="pub-url" class="block font-bold mb-1">Link do Produto</label>
-              <input id="pub-url" name="pubUrl" type="url" autocomplete="off" placeholder="https://www.amazon.com.br/dp/…" spellcheck="false" class="w-full retro-input p-2">
+              <input id="pub-url" name="pubUrl" type="url" autocomplete="off" placeholder="https://www.amazon.com.br/dp/…" spellcheck="false" class="w-full retro-input">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label for="pub-price" class="block font-bold mb-1">Preço Opcional (R$)</label>
-                <input id="pub-price" name="pubPrice" type="number" step="0.01" autocomplete="off" placeholder="49.90" class="w-full retro-input p-2">
+                <input id="pub-price" name="pubPrice" type="number" step="0.01" autocomplete="off" placeholder="49.90" class="w-full retro-input">
               </div>
               <div>
                 <label for="pub-coupon" class="block font-bold mb-1">Cupom Opcional</label>
-                <input id="pub-coupon" name="pubCoupon" type="text" autocomplete="off" placeholder="PROMO10" spellcheck="false" class="w-full retro-input p-2">
+                <input id="pub-coupon" name="pubCoupon" type="text" autocomplete="off" placeholder="PROMO10" spellcheck="false" class="w-full retro-input">
               </div>
             </div>
 
             <div>
               <label class="block font-bold mb-1">Selecione os Canais de Destino</label>
-              <div id="pub-channels-list" class="space-y-1.5 bg-white p-3 border border-black max-h-40 overflow-y-auto"></div>
+              <div id="pub-channels-list" class="space-y-2 bg-white p-3 border border-black max-h-48 overflow-y-auto"></div>
             </div>
 
-            <button onclick="executeManualPublish()" class="w-full retro-btn retro-btn-coral py-3 text-white text-xs">
+            <button onclick="executeManualPublish()" class="w-full retro-btn retro-btn-coral retro-btn-lg text-white">
               <span id="pub-btn-text">Disparar Oferta com Links Afiliados</span>
             </button>
           </div>
@@ -560,9 +585,9 @@
     </main>
 
     <!-- RODAPÉ ESTILO RETRO OS -->
-    <footer class="bg-[#EFE8DC] border-t-2 border-[#1A1614] p-2 text-[10px] text-stone-600 flex items-center justify-between px-4 select-none">
+    <footer class="bg-[#EFE8DC] border-t-2 border-[#1A1614] p-3 text-xs text-stone-600 flex items-center justify-between px-4 select-none">
       <div>PromoBot OS ☼ Poolsuite Edition • 1994–2026</div>
-      <div class="font-vt text-sm">MEMÓRIA RAM: 94MB / 512MB (RAILWAY \$5 TIER)</div>
+      <div class="font-vt text-base">MEMÓRIA RAM: 94MB / 512MB (RAILWAY \$5 TIER)</div>
     </footer>
   </div>
 
@@ -573,39 +598,39 @@
     <div class="retro-window w-full max-w-xl overflow-hidden shadow-2xl">
       <div class="pinstripe-titlebar">
         <div class="titlebar-box" onclick="closeRuleModal()" aria-label="Fechar modal"></div>
-        <div id="modal-title" class="titlebar-text">🎯 Configuração de Regra de Nicho</div>
+        <div id="modal-title" class="titlebar-text">Configuração de Regra de Nicho</div>
         <div class="titlebar-box" onclick="closeRuleModal()" aria-label="Fechar modal"></div>
       </div>
 
-      <div class="p-5 space-y-3.5 max-h-[75vh] overflow-y-auto bg-[#EFE8DC] text-xs">
+      <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-[#EFE8DC] text-xs sm:text-sm">
         <input type="hidden" id="modal-rule-id">
 
         <div>
           <label for="modal-channel-select" class="block font-bold mb-1">Vincular ao Canal</label>
-          <select id="modal-channel-select" name="modalChannel" class="w-full retro-input p-2"></select>
+          <select id="modal-channel-select" name="modalChannel" class="w-full retro-input"></select>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label for="modal-name" class="block font-bold mb-1">Nome da Regra</label>
-            <input id="modal-name" name="ruleName" type="text" autocomplete="off" placeholder="ex: Livros de Teologia" class="w-full retro-input p-2">
+            <input id="modal-name" name="ruleName" type="text" autocomplete="off" placeholder="ex: Livros de Teologia" class="w-full retro-input">
           </div>
           <div>
             <label for="modal-category" class="block font-bold mb-1">Categoria Principal</label>
-            <select id="modal-category" name="ruleCategory" class="w-full retro-input p-2 font-bold">
-              <option value="LIVROS">📚 Livros</option>
-              <option value="TECH">💻 Tecnologia</option>
-              <option value="GAMES">🎮 Games & Consoles</option>
-              <option value="CASA">🏠 Casa & Eletrodomésticos</option>
-              <option value="MODA">👗 Moda & Acessórios</option>
-              <option value="TODOS">🌐 Qualquer Categoria</option>
+            <select id="modal-category" name="ruleCategory" class="w-full retro-input font-bold">
+              <option value="LIVROS">Livros</option>
+              <option value="TECH">Tecnologia</option>
+              <option value="GAMES">Games & Consoles</option>
+              <option value="CASA">Casa & Eletrodomésticos</option>
+              <option value="MODA">Moda & Acessórios</option>
+              <option value="TODOS">Qualquer Categoria</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label for="modal-interval" class="block font-bold mb-1">⏱️ Frequência de Busca</label>
-          <select id="modal-interval" name="ruleInterval" class="w-full retro-input p-2 font-bold">
+          <label for="modal-interval" class="block font-bold mb-1">Frequência de Busca</label>
+          <select id="modal-interval" name="ruleInterval" class="w-full retro-input font-bold">
             <option value="5">A cada 5 minutos</option>
             <option value="15" selected>A cada 15 minutos (Padrão)</option>
             <option value="30">A cada 30 minutos</option>
@@ -616,42 +641,42 @@
         </div>
 
         <div>
-          <label for="modal-brands" class="block font-bold text-purple-900 mb-1">✍️ Autores, Editoras ou Marcas</label>
-          <input id="modal-brands" name="ruleBrands" type="text" autocomplete="off" placeholder="ex: Vida Nova, Thomas Nelson, Fiel, John Piper, C.S. Lewis" spellcheck="false" class="w-full retro-input p-2">
-          <span class="text-[10px] text-stone-500">Separe por vírgulas. Apenas itens dessas editoras/autores serão aprovados.</span>
+          <label for="modal-brands" class="block font-bold text-purple-900 mb-1">Autores e Editoras Obrigatórios</label>
+          <input id="modal-brands" name="ruleBrands" type="text" autocomplete="off" placeholder="ex: Vida Nova, Thomas Nelson, Fiel, John Piper, C.S. Lewis" spellcheck="false" class="w-full retro-input">
+          <span class="text-[11px] text-stone-500">Separe por vírgulas. Apenas itens dessas editoras/autores serão aprovados.</span>
         </div>
 
         <div>
-          <label for="modal-includes" class="block font-bold text-emerald-900 mb-1">✅ Conceitos Obrigatórios</label>
-          <input id="modal-includes" name="ruleIncludes" type="text" autocomplete="off" placeholder="ex: teologia, doutrina, graça, expiação, soberania" spellcheck="false" class="w-full retro-input p-2">
-          <span class="text-[10px] text-stone-500">O produto deve conter ao menos um desses termos conceituais.</span>
+          <label for="modal-includes" class="block font-bold text-emerald-900 mb-1">Conceitos Obrigatórios (Inclusão)</label>
+          <input id="modal-includes" name="ruleIncludes" type="text" autocomplete="off" placeholder="ex: teologia, doutrina, graça, expiação, soberania" spellcheck="false" class="w-full retro-input">
+          <span class="text-[11px] text-stone-500">O produto deve conter ao menos um desses termos conceituais.</span>
         </div>
 
         <div>
-          <label for="modal-excludes" class="block font-bold text-rose-900 mb-1">🚫 Termos Proibidos (Filtro Negativo / Exclusão)</label>
-          <input id="modal-excludes" name="ruleExcludes" type="text" autocomplete="off" placeholder="ex: autoajuda, ficção, romance, esoterismo" spellcheck="false" class="w-full retro-input p-2">
-          <span class="text-[10px] text-stone-500">Se o produto contiver qualquer uma dessas palavras, será descartado.</span>
+          <label for="modal-excludes" class="block font-bold text-rose-900 mb-1">Termos Proibidos (Filtro Negativo / Exclusão)</label>
+          <input id="modal-excludes" name="ruleExcludes" type="text" autocomplete="off" placeholder="ex: autoajuda, ficção, romance, esoterismo" spellcheck="false" class="w-full retro-input">
+          <span class="text-[11px] text-stone-500">Se o produto contiver qualquer uma dessas palavras, será descartado.</span>
         </div>
 
         <div class="grid grid-cols-3 gap-2">
           <div>
             <label for="modal-min-price" class="block font-bold mb-1">Preço Mín (R$)</label>
-            <input id="modal-min-price" name="minPrice" type="number" step="0.01" autocomplete="off" placeholder="0" class="w-full retro-input p-1.5">
+            <input id="modal-min-price" name="minPrice" type="number" step="0.01" autocomplete="off" placeholder="0" class="w-full retro-input">
           </div>
           <div>
             <label for="modal-max-price" class="block font-bold mb-1">Preço Máx (R$)</label>
-            <input id="modal-max-price" name="maxPrice" type="number" step="0.01" autocomplete="off" placeholder="150" class="w-full retro-input p-1.5">
+            <input id="modal-max-price" name="maxPrice" type="number" step="0.01" autocomplete="off" placeholder="150" class="w-full retro-input">
           </div>
           <div>
             <label for="modal-discount" class="block font-bold text-amber-800 mb-1">Desconto Mín (%)</label>
-            <input id="modal-discount" name="minDiscount" type="number" autocomplete="off" placeholder="20" class="w-full retro-input p-1.5">
+            <input id="modal-discount" name="minDiscount" type="number" autocomplete="off" placeholder="20" class="w-full retro-input">
           </div>
         </div>
       </div>
 
-      <div class="flex items-center justify-end gap-2 p-3 border-t-2 border-black bg-[#E8DFC9]">
-        <button onclick="closeRuleModal()" class="retro-btn px-4 py-1.5 text-stone-700">Cancelar</button>
-        <button onclick="saveRuleFromModal()" class="retro-btn retro-btn-teal px-5 py-1.5 text-white">Salvar Regra</button>
+      <div class="flex items-center justify-end gap-3 p-4 border-t-2 border-black bg-[#E8DFC9]">
+        <button onclick="closeRuleModal()" class="retro-btn text-stone-700">Cancelar</button>
+        <button onclick="saveRuleFromModal()" class="retro-btn retro-btn-teal text-white">Salvar Regra</button>
       </div>
     </div>
   </div>
@@ -661,29 +686,29 @@
     <div class="retro-window w-full max-w-md overflow-hidden shadow-2xl">
       <div class="pinstripe-titlebar">
         <div class="titlebar-box" onclick="closeChannelModal()" aria-label="Fechar modal"></div>
-        <div id="channel-modal-title" class="titlebar-text">📢 Cadastrar Novo Canal</div>
+        <div id="channel-modal-title" class="titlebar-text">Cadastrar Novo Canal</div>
         <div class="titlebar-box" onclick="closeChannelModal()" aria-label="Fechar modal"></div>
       </div>
 
-      <div class="p-5 space-y-3 bg-[#EFE8DC] text-xs">
+      <div class="p-6 space-y-4 bg-[#EFE8DC] text-xs sm:text-sm">
         <div>
           <label for="chan-platform" class="block font-bold mb-1">Plataforma</label>
-          <select id="chan-platform" name="chanPlatform" class="w-full retro-input p-2 font-bold">
+          <select id="chan-platform" name="chanPlatform" class="w-full retro-input font-bold">
             <option value="TELEGRAM">Telegram (Canal ou Grupo)</option>
             <option value="WHATSAPP">WhatsApp (Grupo via Evolution API)</option>
           </select>
         </div>
         <div>
           <label for="chan-chatid" class="block font-bold mb-1">Identificador (Chat ID)</label>
-          <input id="chan-chatid" name="chanChatId" type="text" autocomplete="off" placeholder="ex: @canal_promos ou -1001234567890" spellcheck="false" class="w-full retro-input p-2">
+          <input id="chan-chatid" name="chanChatId" type="text" autocomplete="off" placeholder="ex: @canal_promos ou -1001234567890" spellcheck="false" class="w-full retro-input">
         </div>
         <div>
           <label for="chan-name" class="block font-bold mb-1">Nome de Exibição</label>
-          <input id="chan-name" name="chanName" type="text" autocomplete="off" placeholder="ex: Canal Ofertas Teologia" class="w-full retro-input p-2">
+          <input id="chan-name" name="chanName" type="text" autocomplete="off" placeholder="ex: Canal Ofertas Teologia" class="w-full retro-input">
         </div>
         <div>
           <label for="chan-interval" class="block font-bold mb-1">Frequência Padrão de Busca</label>
-          <select id="chan-interval" name="chanInterval" class="w-full retro-input p-2 font-bold">
+          <select id="chan-interval" name="chanInterval" class="w-full retro-input font-bold">
             <option value="15" selected>A cada 15 minutos</option>
             <option value="30">A cada 30 minutos</option>
             <option value="60">A cada 1 hora</option>
@@ -692,9 +717,9 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-end gap-2 p-3 border-t-2 border-black bg-[#E8DFC9]">
-        <button onclick="closeChannelModal()" class="retro-btn px-4 py-1.5 text-stone-700">Cancelar</button>
-        <button onclick="saveChannelFromModal()" class="retro-btn retro-btn-teal px-5 py-1.5 text-white">Salvar Canal</button>
+      <div class="flex items-center justify-end gap-3 p-4 border-t-2 border-black bg-[#E8DFC9]">
+        <button onclick="closeChannelModal()" class="retro-btn text-stone-700">Cancelar</button>
+        <button onclick="saveChannelFromModal()" class="retro-btn retro-btn-teal text-white">Salvar Canal</button>
       </div>
     </div>
   </div>
