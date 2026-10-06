@@ -1,0 +1,95 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id              String        @id @default(cuid())
+  telegramUserId  String        @unique
+  name            String
+  role            String        @default("TENANT_ADMIN") // SUPERADMIN | TENANT_ADMIN
+  isActive        Boolean       @default(true)
+  autoPostEnabled Boolean       @default(true)
+  
+  // Affiliate Configurations
+  amazonTag       String?       // e.g. seutag-20
+  shopeeTag       String?       // e.g. shopee affiliate ID or referral code
+  mercadolivreTag String?       // e.g. ML affiliate code
+  magaluTag       String?       // e.g. magalu affiliate code
+  
+  // Customizations
+  customHeader    String?       // E.g. "🔥 ACHADO DO DIA 🔥"
+  customFooter    String?       // E.g. "👉 Entre no nosso grupo VIP!"
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  channels        Channel[]
+  posts           PostHistory[]
+}
+
+model Channel {
+  id          String        @id @default(cuid())
+  tenantId    String
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  platform    String        @default("TELEGRAM") // TELEGRAM | WHATSAPP
+  chatId      String        // e.g. "@ofertas_canal" or "-1001234567890" or WhatsApp JID
+  name        String        // Display title
+  isActive    Boolean       @default(true)
+  categories  String?       // Comma separated categories or null for all
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  posts       PostHistory[]
+
+  @@unique([tenantId, platform, chatId])
+}
+
+model Deal {
+  id              String        @id @default(cuid())
+  dealHash        String        @unique // SHA256 of canonical URL or ASIN
+  title           String
+  originalUrl     String
+  canonicalUrl    String
+  platform        String        // AMAZON | SHOPEE | MERCADOLIVRE | MAGALU | GENERIC
+  price           Float?
+  originalPrice   Float?
+  discountPercent Int?
+  imageUrl        String?
+  coupon          String?
+  category        String?
+  source          String        // MANUAL | SCRAPER_PELANDO | SCRAPER_PROMOBIT | RSS_AMAZON
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  posts           PostHistory[]
+}
+
+model PostHistory {
+  id                String    @id @default(cuid())
+  dealId            String
+  deal              Deal      @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  tenantId          String
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  channelId         String
+  channel           Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  platform          String    // TELEGRAM | WHATSAPP
+  externalMessageId String?
+  status            String    @default("SENT") // SENT | FAILED
+  error             String?
+  sentAt            DateTime  @default(now())
+
+  @@index([dealId, tenantId])
+  @@index([sentAt])
+}
+
+model SystemSetting {
+  key         String   @id
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
