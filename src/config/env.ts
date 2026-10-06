@@ -17,6 +17,9 @@ const envSchema = z.object({
     .optional()
     .transform((val) => val !== 'false')
     .default(true),
+  ADMIN_USERNAME: z.string().default('admin'),
+  ADMIN_PASSWORD: z.string().default('admin123'),
+  JWT_SECRET: z.string().default('promobot_secret_session_key_2026'),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -43,6 +46,9 @@ try {
     ADMIN_TELEGRAM_ID: process.env.ADMIN_TELEGRAM_ID,
     SCRAPER_INTERVAL_MINUTES: Number(process.env.SCRAPER_INTERVAL_MINUTES) || 10,
     ENABLE_AUTO_SCRAPER: process.env.ENABLE_AUTO_SCRAPER !== 'false',
+    ADMIN_USERNAME: process.env.ADMIN_USERNAME || 'admin',
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'admin123',
+    JWT_SECRET: process.env.JWT_SECRET || 'promobot_secret_session_key_2026',
   };
 }
 

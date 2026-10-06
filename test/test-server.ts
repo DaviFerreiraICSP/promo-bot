@@ -29,7 +29,7 @@ async function testFastifyServer() {
   });
   console.log('1. GET / (Dashboard HTML): Status', responseHtml.statusCode);
   console.assert(responseHtml.statusCode === 200, 'Dashboard HTML deveria retornar 200');
-  console.assert(responseHtml.body.includes('PromoBot Dashboard'), 'Conteúdo do HTML incorreto!');
+  console.assert(responseHtml.body.includes('PromoBot Pro'), 'Conteúdo do HTML incorreto!');
 
   // Teste 2: Script JS do Dashboard
   const responseJs = await server.inject({
@@ -39,7 +39,15 @@ async function testFastifyServer() {
   console.log('2. GET /app.js: Status', responseJs.statusCode);
   console.assert(responseJs.statusCode === 200, 'app.js deveria retornar 200');
 
-  // Teste 3: Simulador de Filtros via POST /api/deals/test-filter
+  // Login para obter token
+  const loginRes = await server.inject({
+    method: 'POST',
+    url: '/api/auth/login',
+    payload: { username: 'admin', password: 'admin123' },
+  });
+  const token = JSON.parse(loginRes.body).token;
+
+  // Teste 3: Simulador de Filtros via POST /api/deals/test-filter com Token
   const testRule = {
     name: 'Livros de Teologia',
     category: 'LIVROS',
@@ -51,6 +59,9 @@ async function testFastifyServer() {
   const responseFilter = await server.inject({
     method: 'POST',
     url: '/api/deals/test-filter',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     payload: {
       url: 'https://www.amazon.com.br/dp/B09B8VGCR8',
       rule: testRule,
