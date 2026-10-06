@@ -61,13 +61,13 @@ export class WhatsAppPublisher implements IPublisher {
       }
     }
 
-    // Se o WhatsApp ainda não estiver ativado no .env
-    console.log(
-      `[WhatsAppPublisher] Integração pronta. Mensagem gerada para ${chatId}:\n${text}`
+    // Se o WhatsApp não estiver configurado no .env
+    console.warn(
+      `[WhatsAppPublisher] Envio não realizado para ${chatId}: WHATSAPP_API_URL e WHATSAPP_API_KEY não configurados.`
     );
     return {
-      success: true,
-      messageId: 'whatsapp_mock_ready',
+      success: false,
+      error: 'WhatsApp API não configurada no .env (configure WHATSAPP_API_URL e WHATSAPP_API_KEY)',
     };
   }
 }

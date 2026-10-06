@@ -37,9 +37,12 @@ export class AffiliateRouter {
       currentUrl.includes('tinyurl.com') ||
       currentUrl.includes('cutt.ly') ||
       currentUrl.includes('amzn.to') ||
+      currentUrl.includes('link.amazon') ||
       currentUrl.includes('shope.ee') ||
       currentUrl.includes('meli.la') ||
-      currentUrl.includes('maga.lu')
+      currentUrl.includes('mais.app') ||
+      currentUrl.includes('maga.lu') ||
+      currentUrl.includes('dpl.pelando.com.br')
     ) {
       currentUrl = await resolveRedirect(currentUrl);
     }

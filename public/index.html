@@ -230,18 +230,17 @@
         <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-5 text-xs sm:text-sm">
           <div class="space-y-1.5">
             <label for="login-username" class="block font-bold">Nome de Usuário</label>
-            <input id="login-username" name="username" type="text" autocomplete="username" spellcheck="false" required placeholder="admin" value="admin" class="w-full retro-input">
+            <input id="login-username" name="username" type="text" autocomplete="username" spellcheck="false" required placeholder="Digite seu usuário" class="w-full retro-input">
           </div>
 
           <div class="space-y-1.5">
             <label for="login-password" class="block font-bold">Chave de Acesso (Senha)</label>
             <div class="relative">
-              <input id="login-password" name="password" type="password" autocomplete="current-password" spellcheck="false" required placeholder="admin123" value="admin123" class="w-full retro-input pr-20">
+              <input id="login-password" name="password" type="password" autocomplete="current-password" spellcheck="false" required placeholder="••••••••" class="w-full retro-input pr-20">
               <button type="button" id="toggle-pass-btn" onclick="togglePasswordVisibility()" aria-label="Mostrar ou ocultar senha" class="absolute right-2 top-1/2 -translate-y-1/2 retro-btn retro-btn-sm text-[10px] uppercase">
                 Ver
               </button>
             </div>
-            <span class="text-[11px] text-stone-500 block pt-1">Credencial padrão: <code>admin</code> / <code>admin123</code></span>
           </div>
 
           <button type="submit" id="login-btn" class="w-full retro-btn retro-btn-teal retro-btn-lg uppercase tracking-wider">
